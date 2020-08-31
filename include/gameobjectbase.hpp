@@ -12,20 +12,20 @@ class ScreenManager;
 
 class GameObjectBase {
 public:
-	GameObjectBase(std::string path, long width, long height, int factor);
+    GameObjectBase(std::string path, long width, long height, int factor);
 
-	std::string getSpriteSheetPath() const;
-	DisplayRectangle getSpriteDisplayRect() const;
-	DisplayRectangle getOutputRect() const;
+    std::string getSpriteSheetPath() const;
+    DisplayRectangle getSpriteDisplayRect() const;
+    DisplayRectangle getOutputRect() const;
 
-	std::shared_ptr<SDL_Texture> getSpriteSheetTexture() const;
-	void setSpriteSheetTexture(std::shared_ptr<SDL_Texture> texture);
+    std::shared_ptr<SDL_Texture> getSpriteSheetTexture() const;
+    void setSpriteSheetTexture(std::shared_ptr<SDL_Texture> texture);
 
-	void addAnimationState(int state, AnimationVector animInfo);
-	void setCurrentAnimationState(int state);
-	void incrementAnimation();
+    void addAnimationState(int state, AnimationVector animInfo);
+    void setCurrentAnimationState(int state);
+    void incrementAnimation();
 
 private:
-	Point _position;
-	Sprite _sprite;
+    Point _position;
+    Sprite _sprite;
 };
