@@ -27,7 +27,6 @@ target_include_directories(Gengine PUBLIC
   )
 
 # cmake -DCMAKE_PREFIX_PATH=DIR ..
-find_package(SDL2 CONFIG REQUIRED)
 target_link_libraries(Gengine PUBLIC
   SDL2::SDL2
   SDL2::SDL2main

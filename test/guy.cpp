@@ -3,7 +3,7 @@
 #include "utility.hpp"
 
 Guy::Guy() 
-	: GameObjectBase("char.bmp", 30, 40, 2)
+	: GameObjectBase("guy.bmp", 30, 40, 10)
 {
 	std::vector<AnimationInfo> walkingRightFrames = {
 		{{0, 2}, 10},
@@ -23,4 +23,4 @@ Guy::Guy()
 	addAnimationState(WALKING_RIGHT, walkingRightInfo);
 	addAnimationState(WALKING_DOWN, walkingDownInfo);
 	setCurrentAnimationState(WALKING_RIGHT);
-} 
+}

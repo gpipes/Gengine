@@ -32,9 +32,7 @@ void Gengine::run() {
 			}
 		}
 
-
-		_screenMan.drawWorld(_gameWorld);
-
+                _screenMan.drawWorld(_gameWorld);
 
 		endFrameTime = SDL_GetTicks();
 		frameDelta = endFrameTime - startFrameTime;
