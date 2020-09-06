@@ -3,6 +3,5 @@
 
 class Guy : public GameObjectBase {
 public:
-	enum States {IDLE, WALKING_RIGHT, WALKING_DOWN};
-	Guy();
+    Guy();
 };

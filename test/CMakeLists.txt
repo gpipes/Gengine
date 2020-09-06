@@ -11,4 +11,5 @@ target_link_libraries(GengineTest PRIVATE
   Gengine
   )
 
-configure_file(./images/guy.bmp guy.bmp COPYONLY)
+configure_file(./images/guy.bmp  images/guy.bmp  COPYONLY)
+configure_file(./config/guy.json config/guy.json COPYONLY)

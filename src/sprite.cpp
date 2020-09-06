@@ -1,25 +1,27 @@
 #include "sprite.hpp"
+#include "spriteinfo.hpp"
 
-Sprite::Sprite(std::string path, long width, long height, int factor)
-    : _path(path),
-      _spriteRect(width, height),
-      _outputFactor(factor),
-      _stateSpriteMap(),
-      _currentAnimationState(0),
+Sprite::Sprite(std::string imgPath, std::string configPath)
+    : _imgPath(imgPath),
+      _spriteRect(0,0),
+      _outputFactor(0),
+      _spriteStateMap(),
+      _currentAnimationState(),
       _currentAnimationFrames(0),
       _currentAnimationIndex(0)
-{}
+{
+    SpriteInfo info(configPath);
+    _spriteRect = info.getSpriteRectangle();
+    _outputFactor = info.getOutputFactor();
+    _spriteStateMap = info.getSpriteStateMap();
+}
 
-void Sprite::setTexture(std::shared_ptr<SDL_Texture> texture) {
+void Sprite::setTexture(TexturePtr texture) {
     _texture = texture;
 }
 
-void Sprite::addAnimationState(int state, AnimationVector animationInfo) {
-    _stateSpriteMap[state] = animationInfo;
-}
-
-void Sprite::setCurrentAnimationState(int state) {
-    if (_stateSpriteMap.find(state) != _stateSpriteMap.end()) {
+void Sprite::setCurrentAnimationState(const std::string &state) {
+    if (_spriteStateMap.find(state) != _spriteStateMap.end()) {
         _currentAnimationState = state;
         _currentAnimationFrames = 0;
         _currentAnimationIndex = 0;
@@ -27,19 +29,19 @@ void Sprite::setCurrentAnimationState(int state) {
 }
 
 AnimationInfo Sprite::getCurrentAnimationInfo() const {
-    if (_stateSpriteMap.find(_currentAnimationState) == _stateSpriteMap.end()
-        || _stateSpriteMap.at(_currentAnimationState).frameInfo.size() <= _currentAnimationIndex ) {
+    if (_spriteStateMap.find(_currentAnimationState) == _spriteStateMap.end()
+        || _spriteStateMap.at(_currentAnimationState).frameInfo.size() <= _currentAnimationIndex ) {
         return { {0, 0}, 0 };
     }
 
-    return _stateSpriteMap.at(_currentAnimationState).frameInfo[_currentAnimationIndex];
+    return _spriteStateMap.at(_currentAnimationState).frameInfo[_currentAnimationIndex];
 }
 
 void Sprite::incrementAnimation() {
-    if (_stateSpriteMap.find(_currentAnimationState) == _stateSpriteMap.end())
+    if (_spriteStateMap.find(_currentAnimationState) == _spriteStateMap.end())
         return;
 	
-    AnimationVector currentAnimVect = _stateSpriteMap.at(_currentAnimationState);
+    AnimationVector currentAnimVect = _spriteStateMap.at(_currentAnimationState);
     if (!currentAnimVect.isAnimated)
         return;
 
@@ -83,7 +85,7 @@ Rectangle Sprite::getOutputRect() const {
     };
 }
 
-std::shared_ptr<SDL_Texture> Sprite::texture() const {
+TexturePtr Sprite::texture() const {
     return _texture;
 }
 
@@ -95,6 +97,6 @@ long Sprite::height() const {
     return _spriteRect.height;
 }
 
-std::string Sprite::path() const {
-    return _path;
+std::string Sprite::imgPath() const {
+    return _imgPath;
 }

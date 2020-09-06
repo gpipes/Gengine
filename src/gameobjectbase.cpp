@@ -1,12 +1,12 @@
 #include "gameobjectbase.hpp"
 
-GameObjectBase::GameObjectBase(std::string path, long width, long height, int factor)
-    : _sprite(path, width, height, factor),
+GameObjectBase::GameObjectBase(std::string imgPath, std::string configPath)
+    : _sprite(imgPath, configPath),
       _position()
 {}
 
 std::string GameObjectBase::getSpriteSheetPath() const {
-    return _sprite.path();
+    return _sprite.imgPath();
 }
 
 void GameObjectBase::incrementAnimation() {
@@ -25,18 +25,14 @@ DisplayRectangle GameObjectBase::getOutputRect() const {
     };
 }
 
-std::shared_ptr<SDL_Texture> GameObjectBase::getSpriteSheetTexture() const {
+TexturePtr GameObjectBase::getSpriteSheetTexture() const {
     return _sprite.texture();
 }
 
-void GameObjectBase::setSpriteSheetTexture(std::shared_ptr<SDL_Texture> texture) {
+void GameObjectBase::setSpriteSheetTexture(TexturePtr texture) {
     _sprite.setTexture(texture);
 }
 
-void GameObjectBase::addAnimationState(int state, AnimationVector animInfo) {
-    _sprite.addAnimationState(state, animInfo);
-}
-
-void GameObjectBase::setCurrentAnimationState(int state) {
+void GameObjectBase::setCurrentAnimationState(const std::string &state) {
     _sprite.setCurrentAnimationState(state);
 }

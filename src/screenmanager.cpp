@@ -27,13 +27,13 @@ void ScreenManager::init() {
 void ScreenManager::load(GameObjectBase& gameObject) {
     std::shared_ptr<SDL_Surface> surface(SDL_LoadBMP(gameObject.getSpriteSheetPath().c_str()), SDL_FreeSurface);
     SDL_SetColorKey(surface.get(), SDL_TRUE, SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
-    std::shared_ptr<SDL_Texture> texture = std::shared_ptr<SDL_Texture>(
+    TexturePtr texture = TexturePtr(
         SDL_CreateTextureFromSurface(_renderer.get(), surface.get()),
         SDL_DestroyTexture);
     gameObject.setSpriteSheetTexture(texture);
 }
 
-void ScreenManager::drawWorld(std::vector<std::shared_ptr<GameObjectBase>> world) {
+void ScreenManager::drawWorld(GameWorld world) {
     SDL_RenderClear(_renderer.get());
     for (auto gameObject : world) {
         draw(*gameObject);

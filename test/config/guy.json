@@ -1,0 +1,96 @@
+{
+    "SpriteRect": {
+	"width": 30,
+	"height": 40
+    },
+    "OutputFactor": 20,
+    "SpriteStateMapList": [
+        {
+            "stateName": "idle_down",
+            "isAnim": false,
+            "isLoop": false,
+            "animInfo": [
+                {
+                    "Position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "Duration": 0
+                }
+            ]
+
+        },
+        {
+            "stateName": "walking_right",
+	    "isAnim": true,
+	    "isLoop": true,
+	    "animInfo": [
+                {
+	            "Position": {
+		        "x": 0,
+		        "y": 2
+	            },
+	            "Duration": 10
+	        },
+		{
+		    "Position": {
+			"x": 1,
+			"y": 2
+		    },
+		    "Duration": 10
+		},
+                {
+		    "Position": {
+			"x": 2,
+			"y": 2
+		    },
+		    "Duration": 10
+		},
+                {
+                    "Position": {
+                        "x": 3,
+                        "y": 2
+                    },
+                    "Duration": 10
+                }
+
+	    ]
+        },
+        {
+            "stateName": "walking_left",
+	    "isAnim": true,
+	    "isLoop": true,
+	    "animInfo": [
+                {
+	            "Position": {
+		        "x": 0,
+		        "y": 1
+	            },
+	            "Duration": 10
+	        },
+		{
+		    "Position": {
+			"x": 1,
+			"y": 1
+		    },
+		    "Duration": 10
+		},
+                {
+		    "Position": {
+			"x": 2,
+			"y": 1
+		    },
+		    "Duration": 10
+		},
+                {
+                    "Position": {
+                        "x": 3,
+                        "y": 1
+                    },
+                    "Duration": 10
+                }
+
+	    ]
+        }
+    ]
+}

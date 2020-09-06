@@ -4,16 +4,15 @@
 #include <vector>
 #include <string>
 #include "SDL.h"
+#include "Fwd.hpp"
 #include "utility.hpp"
-
-class GameObjectBase;
 
 class ScreenManager {
 public:
     ScreenManager(std::string name, int width, int height);
     void init();
     void load(GameObjectBase& gameObject);
-    void drawWorld(std::vector<std::shared_ptr<GameObjectBase>> world);
+    void drawWorld(GameWorld world);
 
 private:
     void draw(const GameObjectBase& gameObject);

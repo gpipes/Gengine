@@ -7,6 +7,7 @@ set(GENGINE_SRCS
   gameobjectbase.cpp
   utility.cpp
   sprite.cpp
+  spriteinfo.cpp
   )
 
 set(GENGINE_HDRS
@@ -26,10 +27,10 @@ target_include_directories(Gengine PUBLIC
   ../include
   )
 
-# cmake -DCMAKE_PREFIX_PATH=DIR ..
 target_link_libraries(Gengine PUBLIC
   SDL2::SDL2
   SDL2::SDL2main
+  ${Boost_LIBRARIES}
   )
 
 set_property(TARGET Gengine PROPERTY CXX_STANDARD 11)

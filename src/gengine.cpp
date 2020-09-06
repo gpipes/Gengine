@@ -42,12 +42,12 @@ void Gengine::run() {
     }
 }
 
-void Gengine::setAndLoadGameWorld(std::vector<std::shared_ptr<GameObjectBase>> world) {
+void Gengine::setAndLoadGameWorld(GameWorld world) {
     setGameWorld(world);
     loadGameWorld();
 }
 
-void Gengine::setGameWorld(std::vector<std::shared_ptr<GameObjectBase>> world) {
+void Gengine::setGameWorld(GameWorld world) {
     _gameWorld = world;
 }
 

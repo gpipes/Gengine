@@ -8,6 +8,9 @@ else()
 endif()
 
 find_package(SDL2 CONFIG REQUIRED)
+set(Boost_USE_STATIC_LIBS ON)
+find_package(Boost REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
 
 add_subdirectory(src)
 add_subdirectory(test)

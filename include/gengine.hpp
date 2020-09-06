@@ -2,9 +2,8 @@
 
 #include <vector>
 #include <string>
+#include "Fwd.hpp"
 #include "screenmanager.hpp"
-
-class GameObjectBase;
 
 class Gengine {
 public:
@@ -14,12 +13,13 @@ public:
     void run();
 
     // effecting gameworld state
-    void setAndLoadGameWorld(std::vector<std::shared_ptr<GameObjectBase>> world);
-    void setGameWorld(std::vector<std::shared_ptr<GameObjectBase>> world);
+    void setAndLoadGameWorld(GameWorld world);
+    void setGameWorld(GameWorld world);
     void loadGameWorld();
 
 private:
     ScreenManager _screenMan;
-    std::vector<std::shared_ptr<GameObjectBase>> _gameWorld;
+    //UpdateManager _updateMan;
+    GameWorld _gameWorld;
     const double _msPerFrame;
 };
