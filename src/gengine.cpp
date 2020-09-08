@@ -7,8 +7,7 @@ namespace {
 }
 
 Gengine::Gengine(std::string name, int width, int height) 
-    : _screenMan(name, width, height),
-      _msPerFrame(msPerFrame60FPS)
+    : _screenMan(name, width, height)
 {
     SDL_Init(0);
     _screenMan.init();
@@ -24,30 +23,35 @@ void Gengine::run() {
 
     while (isRunning) {
         startFrameTime = SDL_GetTicks();
+
         SDL_Event e;
-        if (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) {
-                isRunning = false;
-                continue;
-            }
+        while (SDL_PollEvent(&e)) {
+            _inputMan.addInputEvent(e);
         }
 
+        if (_inputMan.isQuit()) {
+            isRunning = false;
+            continue;
+        }
+
+        _updateMan.updateWorld(_gameWorld, _inputMan);
         _screenMan.drawWorld(_gameWorld);
+        _inputMan.clearInputEvents();
 
         endFrameTime = SDL_GetTicks();
         frameDelta = endFrameTime - startFrameTime;
-        if (frameDelta < _msPerFrame) {
-            SDL_Delay(static_cast<Uint32>(_msPerFrame - frameDelta));
+        if (frameDelta < msPerFrame60FPS) {
+            SDL_Delay(static_cast<Uint32>(msPerFrame60FPS - frameDelta));
         }
     }
 }
 
-void Gengine::setAndLoadGameWorld(GameWorld world) {
+void Gengine::setAndLoadGameWorld(GameObjectList world) {
     setGameWorld(world);
     loadGameWorld();
 }
 
-void Gengine::setGameWorld(GameWorld world) {
+void Gengine::setGameWorld(GameObjectList world) {
     _gameWorld = world;
 }
 

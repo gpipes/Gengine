@@ -4,6 +4,8 @@
 #include <string>
 #include "Fwd.hpp"
 #include "screenmanager.hpp"
+#include "inputmanager.hpp"
+#include "updatemanager.hpp"
 
 class Gengine {
 public:
@@ -13,13 +15,13 @@ public:
     void run();
 
     // effecting gameworld state
-    void setAndLoadGameWorld(GameWorld world);
-    void setGameWorld(GameWorld world);
+    void setAndLoadGameWorld(GameObjectList world);
+    void setGameWorld(GameObjectList world);
     void loadGameWorld();
 
 private:
     ScreenManager _screenMan;
-    //UpdateManager _updateMan;
-    GameWorld _gameWorld;
-    const double _msPerFrame;
+    InputManager _inputMan;
+    UpdateManager _updateMan;
+    GameObjectList _gameWorld;
 };

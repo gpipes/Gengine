@@ -1,13 +1,16 @@
 * DONE [#B] Move sprite map initialization to ini file parsing
 * DONE [#A] refactor vector of shared ptr of gameobjects to have a typedef somewhere
-* TODO [#A] Implement first pass event loop
+* DONE [#A] Implement first pass event loop
 ** 4 pass system in engine making looping 4n (still n for gameobjects, not n^2)
 *** n1 update world (objects can send events here)
 *** n2 pass events through world (all events will be resolved here)
 *** n3 resolve world state (collision/position resolution here)
 *** n4 draw world (draw the world state to screen)
-** TODO [#B] implement update
+** DONE [#B] implement update
 ** TODO [#C] implement event registering
 ** TODO [#C] implement even handling
-* TODO [#A] move sdl from gengine to system event
+* DONE [#A] move sdl from gengine to system event
 * TODO [#B] move std out to file for test
+* TODO Implement visibility on sprites
+* TODO Implement game objects without sprites
+* TODO Design collision

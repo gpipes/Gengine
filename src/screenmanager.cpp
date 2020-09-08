@@ -33,11 +33,14 @@ void ScreenManager::load(GameObjectBase& gameObject) {
     gameObject.setSpriteSheetTexture(texture);
 }
 
-void ScreenManager::drawWorld(GameWorld world) {
+void ScreenManager::drawWorld(GameObjectList world) {
     SDL_RenderClear(_renderer.get());
-    for (auto gameObject : world) {
+    for (GameObjectPtr gameObject : world) {
         draw(*gameObject);
         gameObject->incrementAnimation();
+        if (gameObject->hasRecursiveGameObjects()) {
+            drawWorld(gameObject->getRecursiveGameObjects());
+        }
     }
     SDL_RenderPresent(_renderer.get());
 }
@@ -45,7 +48,7 @@ void ScreenManager::drawWorld(GameWorld world) {
 void ScreenManager::draw(const GameObjectBase& gameObject) {
 
     // this is where the camera should go.
-    // TODO use a default camerat that always keeps 0,0 in the top left
+    // TODO use a default camera that always keeps 0,0 in the top left
     // TODO inherit from default camera and have it follow a gameObject
     SDL_Rect displayRect = sdlRectFromRectangle(gameObject.getSpriteDisplayRect());
     SDL_Rect outputRect = sdlRectFromRectangle(gameObject.getOutputRect());

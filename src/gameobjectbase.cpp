@@ -5,6 +5,8 @@ GameObjectBase::GameObjectBase(std::string imgPath, std::string configPath)
       _position()
 {}
 
+void GameObjectBase::update(const InputManager&, GameEventList&) {}
+
 std::string GameObjectBase::getSpriteSheetPath() const {
     return _sprite.imgPath();
 }
@@ -35,4 +37,12 @@ void GameObjectBase::setSpriteSheetTexture(TexturePtr texture) {
 
 void GameObjectBase::setCurrentAnimationState(const std::string &state) {
     _sprite.setCurrentAnimationState(state);
+}
+
+bool GameObjectBase::hasRecursiveGameObjects() const {
+    return !_gameObjectComponents.empty();
+}
+
+GameObjectList GameObjectBase::getRecursiveGameObjects() const {
+    return _gameObjectComponents;
 }

@@ -21,7 +21,8 @@ void Sprite::setTexture(TexturePtr texture) {
 }
 
 void Sprite::setCurrentAnimationState(const std::string &state) {
-    if (_spriteStateMap.find(state) != _spriteStateMap.end()) {
+    if (_spriteStateMap.find(state) != _spriteStateMap.end()
+        && _currentAnimationState != state) {
         _currentAnimationState = state;
         _currentAnimationFrames = 0;
         _currentAnimationIndex = 0;

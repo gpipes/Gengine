@@ -12,7 +12,7 @@ public:
     ScreenManager(std::string name, int width, int height);
     void init();
     void load(GameObjectBase& gameObject);
-    void drawWorld(GameWorld world);
+    void drawWorld(GameObjectList world);
 
 private:
     void draw(const GameObjectBase& gameObject);

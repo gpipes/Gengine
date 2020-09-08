@@ -1,9 +1,9 @@
 {
     "SpriteRect": {
-	"width": 30,
-	"height": 40
+        "width": 30,
+        "height": 40
     },
-    "OutputFactor": 20,
+    "OutputFactor": 10,
     "SpriteStateMapList": [
         {
             "stateName": "idle_down",
@@ -22,30 +22,30 @@
         },
         {
             "stateName": "walking_right",
-	    "isAnim": true,
-	    "isLoop": true,
-	    "animInfo": [
+            "isAnim": true,
+            "isLoop": true,
+            "animInfo": [
                 {
-	            "Position": {
-		        "x": 0,
-		        "y": 2
-	            },
-	            "Duration": 10
-	        },
-		{
-		    "Position": {
-			"x": 1,
-			"y": 2
-		    },
-		    "Duration": 10
-		},
+                    "Position": {
+                        "x": 0,
+                        "y": 2
+                    },
+                    "Duration": 10
+                },
                 {
-		    "Position": {
-			"x": 2,
-			"y": 2
-		    },
-		    "Duration": 10
-		},
+                    "Position": {
+                        "x": 1,
+                        "y": 2
+                    },
+                    "Duration": 10
+                },
+                {
+                    "Position": {
+                        "x": 2,
+                        "y": 2
+                    },
+                    "Duration": 10
+                },
                 {
                     "Position": {
                         "x": 3,
@@ -54,34 +54,34 @@
                     "Duration": 10
                 }
 
-	    ]
+            ]
         },
         {
             "stateName": "walking_left",
-	    "isAnim": true,
-	    "isLoop": true,
-	    "animInfo": [
+            "isAnim": true,
+            "isLoop": true,
+            "animInfo": [
                 {
-	            "Position": {
-		        "x": 0,
-		        "y": 1
-	            },
-	            "Duration": 10
-	        },
-		{
-		    "Position": {
-			"x": 1,
-			"y": 1
-		    },
-		    "Duration": 10
-		},
+                    "Position": {
+                        "x": 0,
+                        "y": 1
+                    },
+                    "Duration": 10
+                },
                 {
-		    "Position": {
-			"x": 2,
-			"y": 1
-		    },
-		    "Duration": 10
-		},
+                    "Position": {
+                        "x": 1,
+                        "y": 1
+                    },
+                    "Duration": 10
+                },
+                {
+                    "Position": {
+                        "x": 2,
+                        "y": 1
+                    },
+                    "Duration": 10
+                },
                 {
                     "Position": {
                         "x": 3,
@@ -90,7 +90,79 @@
                     "Duration": 10
                 }
 
-	    ]
+            ]
+        },
+        {
+            "stateName": "walking_up",
+                    "isAnim": true,
+            "isLoop": true,
+            "animInfo": [
+                {
+                    "Position": {
+                        "x": 0,
+                        "y": 3
+                    },
+                    "Duration": 10
+                },
+                {
+                    "Position": {
+                        "x": 1,
+                        "y": 3
+                    },
+                    "Duration": 10
+                },
+                {
+                    "Position": {
+                        "x": 2,
+                        "y": 3
+                    },
+                    "Duration": 10
+                },
+                {
+                    "Position": {
+                        "x": 3,
+                        "y": 3
+                    },
+                    "Duration": 10
+                }
+
+            ]
+        },
+                {
+            "stateName": "walking_down",
+            "isAnim": true,
+            "isLoop": true,
+            "animInfo": [
+                {
+                    "Position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "Duration": 10
+                },
+                {
+                    "Position": {
+                        "x": 1,
+                        "y": 0
+                    },
+                    "Duration": 10
+                },
+                {
+                    "Position": {
+                        "x": 2,
+                        "y": 0
+                    },
+                    "Duration": 10
+                },
+                {
+                    "Position": {
+                        "x": 3,
+                        "y": 0
+                    },
+                    "Duration": 10
+                }
+
+            ]
         }
     ]
 }

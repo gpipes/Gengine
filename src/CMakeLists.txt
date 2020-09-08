@@ -2,20 +2,24 @@ cmake_minimum_required(VERSION 3.11.0)
 project(Gengine)
 
 set(GENGINE_SRCS
-  gengine.cpp
-  screenmanager.cpp
   gameobjectbase.cpp
-  utility.cpp
+  gengine.cpp
+  inputmanager.cpp
+  screenmanager.cpp
   sprite.cpp
   spriteinfo.cpp
+  updatemanager.cpp
+  utility.cpp
   )
 
 set(GENGINE_HDRS
-  ../include/gengine.hpp
-  ../include/screenmanager.hpp
   ../include/gameobjectbase.hpp
-  ../include/utility.hpp
+  ../include/gengine.hpp
+  ../include/inputmanager.hpp
+  ../include/screenmanager.hpp
   ../include/sprite.hpp
+  ../include/updatemanager.hpp
+  ../include/utility.hpp
   )
 
 add_library(Gengine
@@ -33,5 +37,4 @@ target_link_libraries(Gengine PUBLIC
   ${Boost_LIBRARIES}
   )
 
-set_property(TARGET Gengine PROPERTY CXX_STANDARD 11)
-
+set_property(TARGET Gengine PROPERTY CXX_STANDARD 17)
