@@ -6,6 +6,8 @@
 #include "screenmanager.hpp"
 #include "inputmanager.hpp"
 #include "updatemanager.hpp"
+#include "componentmanager.hpp"
+#include "systemmanager.hpp"
 
 class Gengine {
 public:
@@ -24,4 +26,7 @@ private:
     InputManager _inputMan;
     UpdateManager _updateMan;
     GameObjectList _gameWorld;
+
+    std::shared_ptr<ComponentManager> _componentMan;
+    std::shared_ptr<SystemManager> _systemMan;
 };

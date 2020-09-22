@@ -10,6 +10,8 @@ set(GENGINE_SRCS
   spriteinfo.cpp
   updatemanager.cpp
   utility.cpp
+  componentmanager.cpp
+  systemmanager.cpp
   )
 
 set(GENGINE_HDRS
@@ -20,6 +22,7 @@ set(GENGINE_HDRS
   ../include/sprite.hpp
   ../include/updatemanager.hpp
   ../include/utility.hpp
+  ../include/componentmanager.hpp
   )
 
 add_library(Gengine

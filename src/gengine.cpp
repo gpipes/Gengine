@@ -7,7 +7,9 @@ namespace {
 }
 
 Gengine::Gengine(std::string name, int width, int height) 
-    : _screenMan(name, width, height)
+    : _screenMan(name, width, height),
+      _componentMan(),
+      _systemMan(std::make_shared<SystemManager>(_componentMan))
 {
     SDL_Init(0);
     _screenMan.init();
@@ -20,6 +22,7 @@ Gengine::~Gengine() {
 void Gengine::run() {
     bool isRunning = true;
     int startFrameTime = 0, endFrameTime = 0, frameDelta = 0;
+    int totalFrameTime = 0;
 
     while (isRunning) {
         startFrameTime = SDL_GetTicks();
@@ -34,6 +37,7 @@ void Gengine::run() {
             continue;
         }
 
+        _systemMan->tick();
         _updateMan.updateWorld(_gameWorld, _inputMan);
         _screenMan.drawWorld(_gameWorld);
         _inputMan.clearInputEvents();
