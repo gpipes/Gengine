@@ -1,5 +1,7 @@
+#include <iostream>
 #include "screenmanager.hpp"
-#include "gameobjectbase.hpp"
+#include "sprite.hpp"
+#include "componentmanager.hpp"
 #include "SDL.h"
 
 ScreenManager::ScreenManager(std::string name, int width, int height) 
@@ -24,33 +26,49 @@ void ScreenManager::init() {
 
 }
 
-void ScreenManager::load(GameObjectBase& gameObject) {
-    std::shared_ptr<SDL_Surface> surface(SDL_LoadBMP(gameObject.getSpriteSheetPath().c_str()), SDL_FreeSurface);
-    SDL_SetColorKey(surface.get(), SDL_TRUE, SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
-    TexturePtr texture = TexturePtr(
-        SDL_CreateTextureFromSurface(_renderer.get(), surface.get()),
-        SDL_DestroyTexture);
-    gameObject.setSpriteSheetTexture(texture);
+void ScreenManager::loadSpriteComponents(std::shared_ptr<ComponentManager> componentMan) {
+    std::set<EntityID> spriteEntities = componentMan->getEntitiesWithSignature({
+            std::type_index(typeid(Sprite))
+                });
+    for (auto& entity : spriteEntities) {
+        Sprite& entitySprite = componentMan->getComponentForEntity<Sprite>(entity);
+        std::shared_ptr<SDL_Surface> surface(SDL_LoadBMP(entitySprite.imgPath().c_str()), SDL_FreeSurface);
+        SDL_SetColorKey(surface.get(), SDL_TRUE, SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
+        TexturePtr texture = TexturePtr(
+            SDL_CreateTextureFromSurface(_renderer.get(), surface.get()),
+            SDL_DestroyTexture);
+        entitySprite.setTexture(texture);
+    }
 }
 
-void ScreenManager::drawWorld(GameObjectList world) {
+std::shared_ptr<System> ScreenManager::getSystem() {
+    return
+        std::make_shared<System>(
+            [this](std::set<EntityID>& entities, std::shared_ptr<ComponentManager> componentMan) {
+                this->systemDraw(entities, componentMan);
+        });
+}
+
+void ScreenManager::systemDraw(std::set<EntityID>& entities, std::shared_ptr<ComponentManager> componentMan) {
     SDL_RenderClear(_renderer.get());
-    for (GameObjectPtr gameObject : world) {
-        draw(*gameObject);
-        gameObject->incrementAnimation();
-        if (gameObject->hasRecursiveGameObjects()) {
-            drawWorld(gameObject->getRecursiveGameObjects());
+    for (auto& entity : entities) {
+        Sprite& entitySprite = componentMan->getComponentForEntity<Sprite>(entity);
+        if (!entitySprite.isLoaded()) {
+            continue;
         }
+
+        Point& entityPosition = componentMan->getComponentForEntity<Position>(entity);
+
+        entitySprite.incrementAnimation();
+
+        SDL_Rect displayRect = sdlRectFromRectangle(entitySprite.getDisplayRect());
+        Rectangle scaledOutputSize = entitySprite.getOutputRect();
+        SDL_Rect outputRect = sdlRectFromRectangle({
+                {entityPosition.x, entityPosition.y},
+                scaledOutputSize.width, scaledOutputSize.height
+            });
+
+        SDL_RenderCopy(_renderer.get(), entitySprite.texture().get(), &displayRect, &outputRect);
     }
     SDL_RenderPresent(_renderer.get());
-}
-
-void ScreenManager::draw(const GameObjectBase& gameObject) {
-
-    // this is where the camera should go.
-    // TODO use a default camera that always keeps 0,0 in the top left
-    // TODO inherit from default camera and have it follow a gameObject
-    SDL_Rect displayRect = sdlRectFromRectangle(gameObject.getSpriteDisplayRect());
-    SDL_Rect outputRect = sdlRectFromRectangle(gameObject.getOutputRect());
-    SDL_RenderCopy(_renderer.get(), gameObject.getSpriteSheetTexture().get(), &displayRect, &outputRect);
 }

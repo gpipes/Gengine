@@ -8,11 +8,15 @@ namespace {
 
 Gengine::Gengine(std::string name, int width, int height) 
     : _screenMan(name, width, height),
-      _componentMan(),
-      _systemMan(std::make_shared<SystemManager>(_componentMan))
+      _componentMan(std::make_shared<ComponentManager>()),
+      _systemMan(std::make_shared<SystemManager>(_componentMan)),
+      _nextEntityID(0)
 {
     SDL_Init(0);
     _screenMan.init();
+    _systemMan->registerEndTickSystem(_screenMan.getSystem(),
+                                      {std::type_index(typeid(Sprite)),
+                                       std::type_index(typeid(Position))});
 }
 
 Gengine::~Gengine() {
@@ -22,8 +26,6 @@ Gengine::~Gengine() {
 void Gengine::run() {
     bool isRunning = true;
     int startFrameTime = 0, endFrameTime = 0, frameDelta = 0;
-    int totalFrameTime = 0;
-
     while (isRunning) {
         startFrameTime = SDL_GetTicks();
 
@@ -38,8 +40,6 @@ void Gengine::run() {
         }
 
         _systemMan->tick();
-        _updateMan.updateWorld(_gameWorld, _inputMan);
-        _screenMan.drawWorld(_gameWorld);
         _inputMan.clearInputEvents();
 
         endFrameTime = SDL_GetTicks();
@@ -50,19 +50,12 @@ void Gengine::run() {
     }
 }
 
-void Gengine::setAndLoadGameWorld(GameObjectList world) {
-    setGameWorld(world);
-    loadGameWorld();
+void Gengine::loadSpriteComponents() {
+    _screenMan.loadSpriteComponents(_componentMan);
 }
 
-void Gengine::setGameWorld(GameObjectList world) {
-    _gameWorld = world;
+EntityID Gengine::createEntity() {
+    EntityID previousID = _nextEntityID;
+    _nextEntityID++;
+    return previousID;
 }
-
-// load all game objects in the world onto the screen we have
-void Gengine::loadGameWorld() {
-    for (auto gameObject : _gameWorld) {
-        _screenMan.load(*gameObject);
-    }
-}
-

@@ -1,5 +1,6 @@
 #include "guy.hpp"
 #include "utility.hpp"
+#include "gengine.hpp"
 
 namespace {
     const std::string WALKING_RIGHT = "walking_right";
@@ -9,27 +10,28 @@ namespace {
     const std::string IDLE_DOWN = "idle_down";
 }
 
-Guy::Guy() 
-	: GameObjectBase("images/guy.bmp", "config/guy.json")
+Guy::Guy(Gengine& gengine)
 {
-        setCurrentAnimationState(WALKING_LEFT);
+    EntityID id = gengine.createEntity();
+    gengine.giveEntityComponent(id, Position(0,0));
+    gengine.giveEntityComponent(id, Sprite("images/guy.bmp", "config/guy.json"));
 }
 
-void Guy::update(const InputManager& inputMan, GameEventList&) {
-    if (inputMan.isKeyPressedEvent("W")) {
-        setCurrentAnimationState(WALKING_UP);
-        runningDirection = WALKING_UP;
-    }
-    if (inputMan.isKeyPressedEvent("A")) {
-        setCurrentAnimationState(WALKING_LEFT);
-        runningDirection = WALKING_LEFT;
-    }
-    if (inputMan.isKeyPressedEvent("S")) {
-        setCurrentAnimationState(WALKING_DOWN);
-        runningDirection = WALKING_DOWN;
-    }
-    if (inputMan.isKeyPressedEvent("D")) {
-        setCurrentAnimationState(WALKING_RIGHT);
-        runningDirection = WALKING_RIGHT;
-    }
-}
+// void Guy::update(const InputManager& inputMan, GameEventList&) {
+//     if (inputMan.isKeyPressedEvent("W")) {
+//         setCurrentAnimationState(WALKING_UP);
+//         runningDirection = WALKING_UP;
+//     }
+//     if (inputMan.isKeyPressedEvent("A")) {
+//         setCurrentAnimationState(WALKING_LEFT);
+//         runningDirection = WALKING_LEFT;
+//     }
+//     if (inputMan.isKeyPressedEvent("S")) {
+//         setCurrentAnimationState(WALKING_DOWN);
+//         runningDirection = WALKING_DOWN;
+//     }
+//     if (inputMan.isKeyPressedEvent("D")) {
+//         setCurrentAnimationState(WALKING_RIGHT);
+//         runningDirection = WALKING_RIGHT;
+//     }
+// }

@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <string>
-#include "Fwd.hpp"
+#include "fwd.hpp"
 #include "screenmanager.hpp"
 #include "inputmanager.hpp"
 #include "updatemanager.hpp"
@@ -14,12 +14,10 @@ public:
     Gengine(std::string name, int width, int height);
     ~Gengine();
 
+    EntityID createEntity();
+    template<typename T> void giveEntityComponent(EntityID,T);
     void run();
-
-    // effecting gameworld state
-    void setAndLoadGameWorld(GameObjectList world);
-    void setGameWorld(GameObjectList world);
-    void loadGameWorld();
+    void loadSpriteComponents();
 
 private:
     ScreenManager _screenMan;
@@ -29,4 +27,11 @@ private:
 
     std::shared_ptr<ComponentManager> _componentMan;
     std::shared_ptr<SystemManager> _systemMan;
+    EntityID _nextEntityID;
 };
+
+template<typename T>
+void Gengine::giveEntityComponent(EntityID id, T component) {
+    _systemMan->invalidateSystemCache();
+    _componentMan->addComponentForEntity(id, component);
+}

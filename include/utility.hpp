@@ -21,6 +21,8 @@ struct Point {
     long x, y;
 };
 
+typedef Point Position;
+
 struct Rectangle {
     Rectangle(long w, long h)
         : width(w),

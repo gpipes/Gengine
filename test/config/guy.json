@@ -6,21 +6,6 @@
     "OutputFactor": 10,
     "SpriteStateMapList": [
         {
-            "stateName": "idle_down",
-            "isAnim": false,
-            "isLoop": false,
-            "animInfo": [
-                {
-                    "Position": {
-                        "x": 0,
-                        "y": 0
-                    },
-                    "Duration": 0
-                }
-            ]
-
-        },
-        {
             "stateName": "walking_right",
             "isAnim": true,
             "isLoop": true,

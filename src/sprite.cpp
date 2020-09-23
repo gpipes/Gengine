@@ -8,7 +8,8 @@ Sprite::Sprite(std::string imgPath, std::string configPath)
       _spriteStateMap(),
       _currentAnimationState(),
       _currentAnimationFrames(0),
-      _currentAnimationIndex(0)
+      _currentAnimationIndex(0),
+      _isLoaded(false)
 {
     SpriteInfo info(configPath);
     _spriteRect = info.getSpriteRectangle();
@@ -18,6 +19,7 @@ Sprite::Sprite(std::string imgPath, std::string configPath)
 
 void Sprite::setTexture(TexturePtr texture) {
     _texture = texture;
+    _isLoaded = true;
 }
 
 void Sprite::setCurrentAnimationState(const std::string &state) {
@@ -100,4 +102,8 @@ long Sprite::height() const {
 
 std::string Sprite::imgPath() const {
     return _imgPath;
+}
+
+bool Sprite::isLoaded() const {
+    return _isLoaded;
 }

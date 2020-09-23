@@ -1,18 +1,19 @@
 #pragma once
 #include <algorithm>
 #include <unordered_map>
+#include <any>
 #include "fwd.hpp"
 
 class ComponentManager {
 public:
     ComponentManager();
     std::set<EntityID> getEntitiesWithSignature(ComponentSignature);
-    template<typename T> T getComponentForEntity(EntityID);
+    template<typename T> T& getComponentForEntity(EntityID);
     template<typename T> void addComponentForEntity(EntityID, T);
 private:
     std::map<EntityID, ComponentSignature> _entitySignaturesMap;
     std::unordered_map<std::type_index,
-                       std::unordered_map<EntityID, Component>> _componentMap;
+                       std::unordered_map<EntityID, std::any>> _componentMap;
 };
 
 template<typename T>
@@ -20,7 +21,7 @@ void ComponentManager::addComponentForEntity(EntityID entity, T component) {
     ComponentSignature existingSignature;
     std::type_index insertedType = std::type_index(typeid(T));
 
-    if (_entitySignaturesMap.find(entity)) {
+    if (_entitySignaturesMap.find(entity) != _entitySignaturesMap.end()) {
         existingSignature = _entitySignaturesMap[entity];
     }
 
@@ -30,9 +31,10 @@ void ComponentManager::addComponentForEntity(EntityID entity, T component) {
     _componentMap[insertedType][entity] = component;
 }
 
-template<typename T> T getComponentForEntity(EntityID)
+template<typename T>
+T& ComponentManager::getComponentForEntity(EntityID id)
 {
-    return static_cast<T>(
-        _componentMap[std::type_index(typeid(T))][EntityID]
+    return std::any_cast<T&>(
+        _componentMap[std::type_index(typeid(T))][id]
         );
 }

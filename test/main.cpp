@@ -4,10 +4,8 @@
 
 int main(int, char**) {
 	Gengine newGame("Test Game", 1600, 900);
-	GameObjectList world;
-	auto guy = std::make_shared<Guy>();
-	world.push_back(guy);
-	newGame.setAndLoadGameWorld(world);
+	auto guy = std::make_shared<Guy>(newGame);
+        newGame.loadSpriteComponents();
 	newGame.run();
 	return 0;
 }

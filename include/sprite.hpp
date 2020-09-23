@@ -13,6 +13,7 @@ public:
     std::string imgPath() const;
     long width() const;
     long height() const;
+    bool isLoaded() const;
 	
     TexturePtr texture() const;
     void setTexture(TexturePtr texture);
@@ -35,4 +36,5 @@ private:
     std::string _currentAnimationState;
     int _currentAnimationFrames;
     int _currentAnimationIndex;
+    bool _isLoaded;
 };

@@ -1,12 +1,7 @@
 #pragma once
 #include "gameobjectbase.hpp"
 
-class Guy : public GameObjectBase {
+class Guy {
 public:
-    Guy();
-    virtual void update(const InputManager&,
-                        GameEventList&) override;
-private:
-    bool isRunning;
-    std::string runningDirection;
+    Guy(Gengine& gengine);
 };

@@ -4,15 +4,16 @@
 #include <vector>
 #include <string>
 #include "SDL.h"
-#include "Fwd.hpp"
+#include "fwd.hpp"
 #include "utility.hpp"
 
 class ScreenManager {
 public:
     ScreenManager(std::string name, int width, int height);
     void init();
-    void load(GameObjectBase& gameObject);
-    void drawWorld(GameObjectList world);
+    void loadSpriteComponents(std::shared_ptr<ComponentManager>);
+    std::shared_ptr<System> getSystem();
+    void systemDraw(std::set<EntityID>&, std::shared_ptr<ComponentManager>);
 
 private:
     void draw(const GameObjectBase& gameObject);
