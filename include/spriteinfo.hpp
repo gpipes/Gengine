@@ -1,15 +1,18 @@
 #pragma once
 #include <string>
-#include <map>
+#include <unordered_map>
 #include <boost/property_tree/ptree.hpp>
 #include "utility.hpp"
 
 class SpriteInfo {
 public:
+    SpriteInfo();
     SpriteInfo(const std::string &configPath);
-    Rectangle SpriteInfo::getSpriteRectangle() const;
-    int SpriteInfo::getOutputFactor() const;
-    std::map<std::string, AnimationVector> SpriteInfo::getSpriteStateMap() const;
+    void parseConfig(const std::string &configPath);
+    Rectangle getSpriteRectangle() const;
+    int getOutputFactor() const;
+    std::unordered_map<std::string, AnimationVector> getSpriteStateMap() const;
+    std::string getDefaultState() const;
 private:
     boost::property_tree::ptree _configFile;
 };

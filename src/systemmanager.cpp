@@ -1,8 +1,12 @@
 #include "systemmanager.hpp"
 #include "componentmanager.hpp"
 
-SystemManager::SystemManager(std::shared_ptr<ComponentManager> componentMan)
-    : _componentMan(componentMan)
+SystemManager::SystemManager(std::shared_ptr<ComponentManager> componentMan,
+                             std::shared_ptr<InputManager> inputMan,
+                             Gengine* parentGengine)
+    : _componentMan(componentMan),
+      _inputMan(inputMan),
+      _parentGengine(parentGengine)
 {}
 
 void SystemManager::registerSystem(std::shared_ptr<System> system,
@@ -70,12 +74,12 @@ void SystemManager::tick() {
         cacheAllSystems();
     }
     for (const std::pair<std::shared_ptr<System>, ComponentSignature>& system : _beginTickSystems) {
-        (*system.first)(_systemCache[system.first], _componentMan);
+        (*system.first)(_systemCache[system.first], _componentMan, _inputMan, _parentGengine);
     }
     for (const std::pair<std::shared_ptr<System>, ComponentSignature>& system : _systems) {
-        (*system.first)(_systemCache[system.first], _componentMan);
+        (*system.first)(_systemCache[system.first], _componentMan, _inputMan, _parentGengine);
     }
     for (const std::pair<std::shared_ptr<System>, ComponentSignature>& system : _endTickSystems) {
-        (*system.first)(_systemCache[system.first], _componentMan);
+        (*system.first)(_systemCache[system.first], _componentMan, _inputMan, _parentGengine);
     }
 }

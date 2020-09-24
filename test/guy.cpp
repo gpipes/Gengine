@@ -10,28 +10,43 @@ namespace {
     const std::string IDLE_DOWN = "idle_down";
 }
 
-Guy::Guy(Gengine& gengine)
+Guy::Guy(Gengine& gengine, Position loc)
 {
     EntityID id = gengine.createEntity();
-    gengine.giveEntityComponent(id, Position(0,0));
+    gengine.giveEntityComponent(id, GuyRunning());
+    gengine.giveEntityComponent(id, loc);
     gengine.giveEntityComponent(id, Sprite("images/guy.bmp", "config/guy.json"));
 }
 
-// void Guy::update(const InputManager& inputMan, GameEventList&) {
-//     if (inputMan.isKeyPressedEvent("W")) {
-//         setCurrentAnimationState(WALKING_UP);
-//         runningDirection = WALKING_UP;
-//     }
-//     if (inputMan.isKeyPressedEvent("A")) {
-//         setCurrentAnimationState(WALKING_LEFT);
-//         runningDirection = WALKING_LEFT;
-//     }
-//     if (inputMan.isKeyPressedEvent("S")) {
-//         setCurrentAnimationState(WALKING_DOWN);
-//         runningDirection = WALKING_DOWN;
-//     }
-//     if (inputMan.isKeyPressedEvent("D")) {
-//         setCurrentAnimationState(WALKING_RIGHT);
-//         runningDirection = WALKING_RIGHT;
-//     }
-// }
+void guyRunningSystem(std::set<EntityID>& entities,
+                      std::shared_ptr<ComponentManager> componentMan,
+                      std::shared_ptr<InputManager> inputMan,
+                      Gengine*)
+{
+    bool isUpPressed = inputMan->isKeyPressedEvent("W"),
+        isLeftPressed = inputMan->isKeyPressedEvent("A"),
+        isRightPressed = inputMan->isKeyPressedEvent("D"),
+        isDownPressed = inputMan->isKeyPressedEvent("S");
+    bool isAnythingOfInterestPressed =
+        isDownPressed || isRightPressed || isLeftPressed || isUpPressed;
+
+    if (!isAnythingOfInterestPressed) {
+        return;
+    }
+
+    for (const EntityID& entity : entities) {
+        Sprite& entitySprite = componentMan->getComponentForEntity<Sprite>(entity);
+        if (isUpPressed) {
+            entitySprite.setCurrentAnimationState(WALKING_UP);
+        }
+        else if (isLeftPressed) {
+            entitySprite.setCurrentAnimationState(WALKING_LEFT);
+        }
+        else if (isDownPressed) {
+            entitySprite.setCurrentAnimationState(WALKING_DOWN);
+        }
+        else if (isRightPressed) {
+            entitySprite.setCurrentAnimationState(WALKING_RIGHT);
+        }
+    }
+}

@@ -22,4 +22,6 @@ private:
     std::shared_ptr<SDL_Renderer> _renderer;
     std::string _windowName;
     Rectangle _windowDimensions;
+
+    std::unordered_map<std::string, TexturePtr> _bmpCache;
 };

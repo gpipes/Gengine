@@ -4,6 +4,7 @@
         "height": 40
     },
     "OutputFactor": 10,
+    "DefaultState": "walking_right",
     "SpriteStateMapList": [
         {
             "stateName": "walking_right",

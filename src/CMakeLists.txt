@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.11.0)
 project(Gengine)
 
 set(GENGINE_SRCS
-  gameobjectbase.cpp
   gengine.cpp
   inputmanager.cpp
   screenmanager.cpp
@@ -15,7 +14,6 @@ set(GENGINE_SRCS
   )
 
 set(GENGINE_HDRS
-  ../include/gameobjectbase.hpp
   ../include/gengine.hpp
   ../include/inputmanager.hpp
   ../include/screenmanager.hpp

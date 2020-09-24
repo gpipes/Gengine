@@ -5,6 +5,8 @@
 #include <map>
 #include "Fwd.hpp"
 #include "utility.hpp"
+#include "spriteinfo.hpp"
+
 
 class Sprite {
 public:
@@ -31,10 +33,13 @@ private:
     std::string _imgPath;
     int _outputFactor;
 
-    AnimationInfo getCurrentAnimationInfo() const;
-    std::map<std::string, AnimationVector> _spriteStateMap;
-    std::string _currentAnimationState;
+    std::unordered_map<std::string, AnimationVector> _spriteStateMap;
+    AnimationVector _currentAnimVect;
+    DisplayRectangle _currentDisplayRect;
     int _currentAnimationFrames;
     int _currentAnimationIndex;
     bool _isLoaded;
+    std::string _currentAnimState;
+
+    static std::unordered_map<std::string, SpriteInfo> _loadedConfigs;
 };

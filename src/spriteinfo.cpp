@@ -4,9 +4,17 @@
 
 namespace pt = boost::property_tree;
 
+SpriteInfo::SpriteInfo()
+    : _configFile()
+{}
+
 SpriteInfo::SpriteInfo(const std::string &configPath)
     : _configFile()
 {
+    pt::json_parser::read_json(configPath, _configFile);
+}
+
+void SpriteInfo::parseConfig(const std::string &configPath) {
     pt::json_parser::read_json(configPath, _configFile);
 }
 
@@ -21,8 +29,8 @@ int SpriteInfo::getOutputFactor() const {
     return _configFile.get("OutputFactor", 1);
 }
 
-std::map<std::string, AnimationVector> SpriteInfo::getSpriteStateMap() const {
-    std::map<std::string, AnimationVector> spriteStates;
+std::unordered_map<std::string, AnimationVector> SpriteInfo::getSpriteStateMap() const {
+    std::unordered_map<std::string, AnimationVector> spriteStates;
     pt::ptree spriteStateMapList = _configFile.get_child("SpriteStateMapList");
     for(auto spriteStateMapPair : spriteStateMapList) {
         pt::ptree spriteStateMap = spriteStateMapPair.second;
@@ -45,4 +53,8 @@ std::map<std::string, AnimationVector> SpriteInfo::getSpriteStateMap() const {
         spriteStates[stateName] = AnimationVector(animInfoVector, isAnim, isLoop);
     }
     return spriteStates;
+}
+
+std::string SpriteInfo::getDefaultState() const {
+    return _configFile.get<std::string>("DefaultState");
 }

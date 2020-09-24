@@ -14,11 +14,15 @@ class UpdateManager;
 class GameObjectBase;
 class GameEvent;
 class ComponentManager;
+class InputManager;
+class Sprite;
 
 typedef std::size_t EntityID;
 typedef std::set<std::type_index> ComponentSignature;
 typedef std::function<void(std::set<EntityID>&,
-                           std::shared_ptr<ComponentManager>)> System;
+                           std::shared_ptr<ComponentManager>,
+                           std::shared_ptr<InputManager>,
+                           Gengine*)> System;
 typedef std::set<std::pair<std::shared_ptr<System>,
                               ComponentSignature>> SystemList;
 typedef std::shared_ptr<GameObjectBase> GameObjectPtr;

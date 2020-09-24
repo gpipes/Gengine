@@ -29,7 +29,7 @@ bool InputManager::isQuit() const {
 }
 
 bool InputManager::isKeyPressedEvent(const std::string& keyName) const {
-    std::map<std::string, bool>::const_iterator it
+    std::unordered_map<std::string, bool>::const_iterator it
         = _keyboardEvents.find(keyName);
     if (it != _keyboardEvents.end()) {
         return it->second;

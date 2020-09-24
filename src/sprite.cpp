@@ -1,20 +1,39 @@
 #include "sprite.hpp"
-#include "spriteinfo.hpp"
+
+std::unordered_map<std::string, SpriteInfo> Sprite::_loadedConfigs;
 
 Sprite::Sprite(std::string imgPath, std::string configPath)
     : _imgPath(imgPath),
       _spriteRect(0,0),
       _outputFactor(0),
       _spriteStateMap(),
-      _currentAnimationState(),
       _currentAnimationFrames(0),
       _currentAnimationIndex(0),
-      _isLoaded(false)
+      _isLoaded(false),
+      _currentAnimState()
 {
-    SpriteInfo info(configPath);
+    SpriteInfo info;
+    if (_loadedConfigs.find(configPath) != _loadedConfigs.end()) {
+        info = _loadedConfigs[configPath];
+    }
+    else {
+        info.parseConfig(configPath);
+        _loadedConfigs[configPath] = info;
+    }
+
     _spriteRect = info.getSpriteRectangle();
     _outputFactor = info.getOutputFactor();
     _spriteStateMap = info.getSpriteStateMap();
+    _currentAnimState = info.getDefaultState();
+    _currentAnimVect = _spriteStateMap[_currentAnimState];
+
+    _currentDisplayRect.loc.x
+        = _currentAnimVect.frameInfo[_currentAnimationIndex].pos.x * _spriteRect.width;
+    _currentDisplayRect.loc.y
+        = _currentAnimVect.frameInfo[_currentAnimationIndex].pos.y * _spriteRect.height;
+
+    _currentDisplayRect.width = _spriteRect.width;
+    _currentDisplayRect.height = _spriteRect.height;
 }
 
 void Sprite::setTexture(TexturePtr texture) {
@@ -23,62 +42,44 @@ void Sprite::setTexture(TexturePtr texture) {
 }
 
 void Sprite::setCurrentAnimationState(const std::string &state) {
-    if (_spriteStateMap.find(state) != _spriteStateMap.end()
-        && _currentAnimationState != state) {
-        _currentAnimationState = state;
+    if (state != _currentAnimState) {
         _currentAnimationFrames = 0;
         _currentAnimationIndex = 0;
+        _currentAnimState = state;
+        _currentAnimVect = _spriteStateMap[state];
     }
-}
-
-AnimationInfo Sprite::getCurrentAnimationInfo() const {
-    if (_spriteStateMap.find(_currentAnimationState) == _spriteStateMap.end()
-        || _spriteStateMap.at(_currentAnimationState).frameInfo.size() <= _currentAnimationIndex ) {
-        return { {0, 0}, 0 };
-    }
-
-    return _spriteStateMap.at(_currentAnimationState).frameInfo[_currentAnimationIndex];
 }
 
 void Sprite::incrementAnimation() {
-    if (_spriteStateMap.find(_currentAnimationState) == _spriteStateMap.end())
-        return;
-	
-    AnimationVector currentAnimVect = _spriteStateMap.at(_currentAnimationState);
-    if (!currentAnimVect.isAnimated)
+    if (!_currentAnimVect.isAnimated)
         return;
 
-    if (!currentAnimVect.isLooped && _currentAnimationIndex == currentAnimVect.frameInfo.size() - 1)
+    if (!_currentAnimVect.isLooped && _currentAnimationIndex == _currentAnimVect.frameInfo.size() - 1)
         return;
 
     // at this point it's animated and is either looped or has frames left to display
 	
-    if (currentAnimVect.frameInfo[_currentAnimationIndex].totalFrames > _currentAnimationFrames) {
+    if (_currentAnimVect.frameInfo[_currentAnimationIndex].totalFrames > _currentAnimationFrames) {
         _currentAnimationFrames++;
         return;
     }
 
     _currentAnimationFrames = 0;
 
-    if (currentAnimVect.frameInfo.size() - 1 == _currentAnimationIndex) {
+    if (_currentAnimVect.frameInfo.size() - 1 == _currentAnimationIndex) {
         _currentAnimationIndex = 0;
-        return;
     }
-
-    _currentAnimationIndex++;
+    else {
+        _currentAnimationIndex++;
+    }
+    _currentDisplayRect.loc.x
+        = _currentAnimVect.frameInfo[_currentAnimationIndex].pos.x * _spriteRect.width;
+    _currentDisplayRect.loc.y
+        = _currentAnimVect.frameInfo[_currentAnimationIndex].pos.y * _spriteRect.height;
 }
 
 DisplayRectangle Sprite::getDisplayRect() const {
-    AnimationInfo currentAnimationInfo = getCurrentAnimationInfo();
-
-    return {
-        {
-            currentAnimationInfo.pos.x * _spriteRect.width,
-            currentAnimationInfo.pos.y * _spriteRect.height
-        },
-        _spriteRect.width,
-        _spriteRect.height
-    };
+    return _currentDisplayRect;
 }
 
 Rectangle Sprite::getOutputRect() const {

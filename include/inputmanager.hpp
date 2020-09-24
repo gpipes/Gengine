@@ -1,5 +1,5 @@
 #pragma once
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <SDL.h>
 
@@ -14,7 +14,7 @@ private:
     void addKeyBoardEvent(const SDL_Event& e);
     bool _isQuit;
 
-    std::map<std::string, bool> _keyboardEvents;
-    std::map<std::string, bool> _keyboardState;
+    std::unordered_map<std::string, bool> _keyboardEvents;
+    std::unordered_map<std::string, bool> _keyboardState;
 
 };

@@ -16,15 +16,16 @@ public:
 
     EntityID createEntity();
     template<typename T> void giveEntityComponent(EntityID,T);
+
     void run();
     void loadSpriteComponents();
 
+    void registerSystem(std::shared_ptr<System>, ComponentSignature);
+
 private:
     ScreenManager _screenMan;
-    InputManager _inputMan;
-    UpdateManager _updateMan;
-    GameObjectList _gameWorld;
 
+    std::shared_ptr<InputManager> _inputMan;
     std::shared_ptr<ComponentManager> _componentMan;
     std::shared_ptr<SystemManager> _systemMan;
     EntityID _nextEntityID;

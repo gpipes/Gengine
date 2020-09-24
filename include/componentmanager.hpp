@@ -10,6 +10,10 @@ public:
     std::set<EntityID> getEntitiesWithSignature(ComponentSignature);
     template<typename T> T& getComponentForEntity(EntityID);
     template<typename T> void addComponentForEntity(EntityID, T);
+
+    template<typename T>
+    std::vector<std::pair<EntityID, T*>> getComponentsForSignature(ComponentSignature);
+
 private:
     std::map<EntityID, ComponentSignature> _entitySignaturesMap;
     std::unordered_map<std::type_index,
@@ -35,6 +39,6 @@ template<typename T>
 T& ComponentManager::getComponentForEntity(EntityID id)
 {
     return std::any_cast<T&>(
-        _componentMap[std::type_index(typeid(T))][id]
+        _componentMap.at(std::type_index(typeid(T))).at(id)
         );
 }

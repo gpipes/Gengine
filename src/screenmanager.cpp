@@ -4,7 +4,7 @@
 #include "componentmanager.hpp"
 #include "SDL.h"
 
-ScreenManager::ScreenManager(std::string name, int width, int height) 
+ScreenManager::ScreenManager(std::string name, int width, int height)
     : _windowName(name),
       _windowDimensions(width, height)
 {}
@@ -32,11 +32,18 @@ void ScreenManager::loadSpriteComponents(std::shared_ptr<ComponentManager> compo
                 });
     for (auto& entity : spriteEntities) {
         Sprite& entitySprite = componentMan->getComponentForEntity<Sprite>(entity);
+        if (_bmpCache.find(entitySprite.imgPath()) != _bmpCache.end()) {
+            entitySprite.setTexture(_bmpCache[entitySprite.imgPath()]);
+            continue;
+        }
+
         std::shared_ptr<SDL_Surface> surface(SDL_LoadBMP(entitySprite.imgPath().c_str()), SDL_FreeSurface);
         SDL_SetColorKey(surface.get(), SDL_TRUE, SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
+
         TexturePtr texture = TexturePtr(
             SDL_CreateTextureFromSurface(_renderer.get(), surface.get()),
             SDL_DestroyTexture);
+        _bmpCache[entitySprite.imgPath()] = texture;
         entitySprite.setTexture(texture);
     }
 }
@@ -44,7 +51,8 @@ void ScreenManager::loadSpriteComponents(std::shared_ptr<ComponentManager> compo
 std::shared_ptr<System> ScreenManager::getSystem() {
     return
         std::make_shared<System>(
-            [this](std::set<EntityID>& entities, std::shared_ptr<ComponentManager> componentMan) {
+            [this](std::set<EntityID>& entities, std::shared_ptr<ComponentManager> componentMan,
+                   std::shared_ptr<InputManager>, Gengine*) {
                 this->systemDraw(entities, componentMan);
         });
 }
