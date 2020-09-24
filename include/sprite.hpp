@@ -15,8 +15,7 @@ public:
     std::string imgPath() const;
     long width() const;
     long height() const;
-    bool isLoaded() const;
-	
+
     TexturePtr texture() const;
     void setTexture(TexturePtr texture);
 
@@ -38,7 +37,6 @@ private:
     DisplayRectangle _currentDisplayRect;
     int _currentAnimationFrames;
     int _currentAnimationIndex;
-    bool _isLoaded;
     std::string _currentAnimState;
 
     static std::unordered_map<std::string, SpriteInfo> _loadedConfigs;

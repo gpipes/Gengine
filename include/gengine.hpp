@@ -5,17 +5,16 @@
 #include "fwd.hpp"
 #include "screenmanager.hpp"
 #include "inputmanager.hpp"
-#include "updatemanager.hpp"
 #include "componentmanager.hpp"
 #include "systemmanager.hpp"
 
 class Gengine {
 public:
-    Gengine(std::string name, int width, int height);
+    Gengine(std::string name, int width, int height, bool fullscreen);
     ~Gengine();
 
     EntityID createEntity();
-    template<typename T> void giveEntityComponent(EntityID,T);
+    template<typename T> void giveEntityComponent(EntityID,std::shared_ptr<T>);
 
     void run();
     void loadSpriteComponents();
@@ -32,7 +31,7 @@ private:
 };
 
 template<typename T>
-void Gengine::giveEntityComponent(EntityID id, T component) {
+void Gengine::giveEntityComponent(EntityID id, std::shared_ptr<T> component) {
     _systemMan->invalidateSystemCache();
     _componentMan->addComponentForEntity(id, component);
 }

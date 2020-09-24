@@ -13,9 +13,9 @@ namespace {
 Guy::Guy(Gengine& gengine, Position loc)
 {
     EntityID id = gengine.createEntity();
-    gengine.giveEntityComponent(id, GuyRunning());
-    gengine.giveEntityComponent(id, loc);
-    gengine.giveEntityComponent(id, Sprite("images/guy.bmp", "config/guy.json"));
+    gengine.giveEntityComponent(id, std::make_shared<GuyRunning>());
+    gengine.giveEntityComponent(id, std::make_shared<Position>(loc.x, loc.y));
+    gengine.giveEntityComponent(id, std::make_shared<Sprite>("images/guy.bmp", "config/guy.json"));
 }
 
 void guyRunningSystem(std::set<EntityID>& entities,
@@ -33,20 +33,21 @@ void guyRunningSystem(std::set<EntityID>& entities,
     if (!isAnythingOfInterestPressed) {
         return;
     }
+    std::shared_ptr<std::vector<std::shared_ptr<Sprite>>> entitySprite
+        = componentMan->get<Sprite>();
 
     for (const EntityID& entity : entities) {
-        Sprite& entitySprite = componentMan->getComponentForEntity<Sprite>(entity);
         if (isUpPressed) {
-            entitySprite.setCurrentAnimationState(WALKING_UP);
+            entitySprite->at(entity)->setCurrentAnimationState(WALKING_UP);
         }
         else if (isLeftPressed) {
-            entitySprite.setCurrentAnimationState(WALKING_LEFT);
+            entitySprite->at(entity)->setCurrentAnimationState(WALKING_LEFT);
         }
         else if (isDownPressed) {
-            entitySprite.setCurrentAnimationState(WALKING_DOWN);
+            entitySprite->at(entity)->setCurrentAnimationState(WALKING_DOWN);
         }
         else if (isRightPressed) {
-            entitySprite.setCurrentAnimationState(WALKING_RIGHT);
+            entitySprite->at(entity)->setCurrentAnimationState(WALKING_RIGHT);
         }
     }
 }

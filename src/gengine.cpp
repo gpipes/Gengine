@@ -6,8 +6,8 @@ namespace {
     static const double msPerFrame60FPS = 16.667;
 }
 
-Gengine::Gengine(std::string name, int width, int height) 
-    : _screenMan(name, width, height),
+Gengine::Gengine(std::string name, int width, int height, bool fullscreen)
+    : _screenMan(name, width, height, fullscreen),
       _inputMan(std::make_shared<InputManager>()),
       _componentMan(std::make_shared<ComponentManager>()),
       _systemMan(std::make_shared<SystemManager>(_componentMan, _inputMan, this)),
@@ -48,7 +48,6 @@ void Gengine::run() {
         if (frameDelta < msPerFrame60FPS) {
             SDL_Delay(static_cast<Uint32>(msPerFrame60FPS - frameDelta));
         }
-        std::cout << "Tick Time: " << SDL_GetTicks() - startFrameTime << std::endl;
     }
 }
 

@@ -11,8 +11,9 @@ public:
     void parseConfig(const std::string &configPath);
     Rectangle getSpriteRectangle() const;
     int getOutputFactor() const;
-    std::unordered_map<std::string, AnimationVector> getSpriteStateMap() const;
+    std::unordered_map<std::string, AnimationVector> getSpriteStateMap();
     std::string getDefaultState() const;
 private:
     boost::property_tree::ptree _configFile;
+    std::unordered_map<std::string, AnimationVector> _spriteStateMap;
 };

@@ -7,7 +7,6 @@ set(GENGINE_SRCS
   screenmanager.cpp
   sprite.cpp
   spriteinfo.cpp
-  updatemanager.cpp
   utility.cpp
   componentmanager.cpp
   systemmanager.cpp
@@ -18,7 +17,6 @@ set(GENGINE_HDRS
   ../include/inputmanager.hpp
   ../include/screenmanager.hpp
   ../include/sprite.hpp
-  ../include/updatemanager.hpp
   ../include/utility.hpp
   ../include/componentmanager.hpp
   )
@@ -33,7 +31,7 @@ target_include_directories(Gengine PUBLIC
   )
 
 target_link_libraries(Gengine PUBLIC
-  SDL2::SDL2
+  SDL2::SDL2-static
   SDL2::SDL2main
   ${Boost_LIBRARIES}
   )

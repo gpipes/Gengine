@@ -9,7 +9,6 @@ Sprite::Sprite(std::string imgPath, std::string configPath)
       _spriteStateMap(),
       _currentAnimationFrames(0),
       _currentAnimationIndex(0),
-      _isLoaded(false),
       _currentAnimState()
 {
     SpriteInfo info;
@@ -38,7 +37,6 @@ Sprite::Sprite(std::string imgPath, std::string configPath)
 
 void Sprite::setTexture(TexturePtr texture) {
     _texture = texture;
-    _isLoaded = true;
 }
 
 void Sprite::setCurrentAnimationState(const std::string &state) {
@@ -60,7 +58,7 @@ void Sprite::incrementAnimation() {
     // at this point it's animated and is either looped or has frames left to display
 	
     if (_currentAnimVect.frameInfo[_currentAnimationIndex].totalFrames > _currentAnimationFrames) {
-        _currentAnimationFrames++;
+        ++_currentAnimationFrames;
         return;
     }
 
@@ -70,7 +68,7 @@ void Sprite::incrementAnimation() {
         _currentAnimationIndex = 0;
     }
     else {
-        _currentAnimationIndex++;
+        ++_currentAnimationIndex;
     }
     _currentDisplayRect.loc.x
         = _currentAnimVect.frameInfo[_currentAnimationIndex].pos.x * _spriteRect.width;
@@ -103,8 +101,4 @@ long Sprite::height() const {
 
 std::string Sprite::imgPath() const {
     return _imgPath;
-}
-
-bool Sprite::isLoaded() const {
-    return _isLoaded;
 }

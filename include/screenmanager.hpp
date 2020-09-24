@@ -9,7 +9,7 @@
 
 class ScreenManager {
 public:
-    ScreenManager(std::string name, int width, int height);
+    ScreenManager(std::string, int, int, bool);
     void init();
     void loadSpriteComponents(std::shared_ptr<ComponentManager>);
     std::shared_ptr<System> getSystem();
@@ -22,6 +22,7 @@ private:
     std::shared_ptr<SDL_Renderer> _renderer;
     std::string _windowName;
     Rectangle _windowDimensions;
+    bool _isFullscreen;
 
     std::unordered_map<std::string, TexturePtr> _bmpCache;
 };

@@ -8,20 +8,21 @@ class ComponentManager {
 public:
     ComponentManager();
     std::set<EntityID> getEntitiesWithSignature(ComponentSignature);
-    template<typename T> T& getComponentForEntity(EntityID);
-    template<typename T> void addComponentForEntity(EntityID, T);
+    template<typename T> std::shared_ptr<T> getComponentForEntity(EntityID);
+    template<typename T> void addComponentForEntity(EntityID, std::shared_ptr<T> component);
 
     template<typename T>
-    std::vector<std::pair<EntityID, T*>> getComponentsForSignature(ComponentSignature);
+    std::shared_ptr<
+        std::vector<std::shared_ptr<T>>> get();
 
 private:
     std::map<EntityID, ComponentSignature> _entitySignaturesMap;
     std::unordered_map<std::type_index,
-                       std::unordered_map<EntityID, std::any>> _componentMap;
+                       std::shared_ptr<std::vector<std::shared_ptr<void>>>> _componentMap;
 };
 
 template<typename T>
-void ComponentManager::addComponentForEntity(EntityID entity, T component) {
+void ComponentManager::addComponentForEntity(EntityID entity, std::shared_ptr<T> component) {
     ComponentSignature existingSignature;
     std::type_index insertedType = std::type_index(typeid(T));
 
@@ -32,13 +33,26 @@ void ComponentManager::addComponentForEntity(EntityID entity, T component) {
     existingSignature.insert(insertedType);
     _entitySignaturesMap[entity] = existingSignature;
 
-    _componentMap[insertedType][entity] = component;
+    if (_componentMap.find(insertedType) == _componentMap.end()) {
+        _componentMap[insertedType]
+            = std::make_shared<std::vector<std::shared_ptr<void>>>();
+        _componentMap[insertedType]->resize(std::max<EntityID>(entity * 2, 2));
+    } else if ((_componentMap[insertedType]->size()-1) < entity) {
+        _componentMap[insertedType]->resize(entity * 2);
+    }
+    (*_componentMap[insertedType])[entity] = component;
 }
 
 template<typename T>
-T& ComponentManager::getComponentForEntity(EntityID id)
+std::shared_ptr<T> ComponentManager::getComponentForEntity(EntityID id)
 {
-    return std::any_cast<T&>(
-        _componentMap.at(std::type_index(typeid(T))).at(id)
+    return std::reinterpret_pointer_cast<T>(
+        _componentMap.at(std::type_index(typeid(T)))->at(id)
         );
+}
+
+template<typename T>
+std::shared_ptr<std::vector<std::shared_ptr<T>>> ComponentManager::get() {
+    return std::reinterpret_pointer_cast<std::vector<std::shared_ptr<T>>>
+        (_componentMap[std::type_index(typeid(T))]);
 }
