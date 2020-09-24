@@ -1,2 +1,0 @@
-* Build command
-cmake .. "-DCMAKE_TOOLCHAIN_FILE=path_to_/vcpkg/scripts/buildsystems/vcpkg.cmake" -Wno-dev

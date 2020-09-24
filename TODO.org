@@ -12,5 +12,6 @@
 * DONE [#A] move sdl from gengine to system event
 * TODO [#B] move std out to file for test
 * TODO Implement visibility on sprites
-* TODO Implement game objects without sprites
+* DONE Implement game objects without sprites
 * TODO Design collision
+* DONE Move to ECS
