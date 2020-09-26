@@ -3,9 +3,23 @@
         "width": 30,
         "height": 40
     },
-    "OutputFactor": 10,
-    "DefaultState": "walking_right",
+    "OutputFactor": 1.5,
+    "DefaultState": "walking_down",
     "SpriteStateMapList": [
+        {
+            "stateName": "idle_down",
+            "isAnim": true,
+            "isLoop": true,
+            "animInfo": [
+                {
+                    "Position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "Duration": 10
+                }
+            ]
+        },
         {
             "stateName": "walking_right",
             "isAnim": true,
@@ -48,7 +62,7 @@
             "isLoop": true,
             "animInfo": [
                 {
-                    "Position": {
+                     "Position": {
                         "x": 0,
                         "y": 1
                     },

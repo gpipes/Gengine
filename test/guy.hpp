@@ -3,6 +3,14 @@
 #include "sprite.hpp"
 
 struct GuyRunning {};
+struct Destination {
+    Destination(long x, long y, int v)
+        : dest(x,y),
+          velocity(v)
+        {}
+    Position dest;
+    int velocity;
+};
 
 class Guy {
 public:

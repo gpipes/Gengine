@@ -65,13 +65,13 @@ std::shared_ptr<System> ScreenManager::getSystem() {
 
 void ScreenManager::systemDraw(std::set<EntityID>& entities, std::shared_ptr<ComponentManager> componentMan) {
     SDL_RenderClear(_renderer.get());
-    std::shared_ptr<std::vector<std::shared_ptr<Sprite>>> spriteComponents
-        = componentMan->get<Sprite>();
-    std::shared_ptr<std::vector<std::shared_ptr<Position>>> positionComponents
-        = componentMan->get<Position>();
+    std::vector<std::shared_ptr<Sprite>>& spriteComponents
+        = *componentMan->get<Sprite>();
+    std::vector<std::shared_ptr<Position>>& positionComponents
+        = *componentMan->get<Position>();
     for (auto& entity : entities) {
-        std::shared_ptr<Sprite>& entitySprite = spriteComponents->at(entity);
-        std::shared_ptr<Position>& entityPosition = positionComponents->at(entity);
+        std::shared_ptr<Sprite>& entitySprite = spriteComponents[entity];
+        std::shared_ptr<Position>& entityPosition = positionComponents[entity];
 
         entitySprite->incrementAnimation();
 

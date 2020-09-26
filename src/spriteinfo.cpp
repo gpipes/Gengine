@@ -6,7 +6,13 @@ namespace pt = boost::property_tree;
 
 SpriteInfo::SpriteInfo()
     : _configFile(),
-      _spriteStateMap()
+      _spriteStateMap(),
+      _spriteRectangle(),
+      _rectangleInitialized(false),
+      _outputFactor(1),
+      _outputFactorInitialized(false),
+      _defaultState(),
+      _defaultStateInitialized(false)
 {}
 
 SpriteInfo::SpriteInfo(const std::string &configPath)
@@ -19,15 +25,24 @@ void SpriteInfo::parseConfig(const std::string &configPath) {
     pt::json_parser::read_json(configPath, _configFile);
 }
 
-Rectangle SpriteInfo::getSpriteRectangle() const {
-    return Rectangle(
-        _configFile.get<int>("SpriteRect.width"),
-        _configFile.get<int>("SpriteRect.height")
-        );
+Rectangle SpriteInfo::getSpriteRectangle() {
+    if (!_rectangleInitialized) {
+        _spriteRectangle = Rectangle(
+            _configFile.get<int>("SpriteRect.width"),
+            _configFile.get<int>("SpriteRect.height")
+            );
+        _rectangleInitialized = true;
+    }
+    return _spriteRectangle;
 }
 
-int SpriteInfo::getOutputFactor() const {
-    return _configFile.get("OutputFactor", 1);
+int SpriteInfo::getOutputFactor() {
+    if (!_outputFactorInitialized) {
+        _outputFactor = _configFile.get("OutputFactor", 1);
+        _outputFactorInitialized = true;
+    }
+
+    return _outputFactor;
 }
 
 std::unordered_map<std::string, AnimationVector> SpriteInfo::getSpriteStateMap() {
@@ -60,6 +75,10 @@ std::unordered_map<std::string, AnimationVector> SpriteInfo::getSpriteStateMap()
     return spriteStates;
 }
 
-std::string SpriteInfo::getDefaultState() const {
-    return _configFile.get<std::string>("DefaultState");
+std::string SpriteInfo::getDefaultState() {
+    if (!_defaultStateInitialized) {
+        _defaultState = _configFile.get<std::string>("DefaultState");
+        _defaultStateInitialized = true;
+    }
+    return _defaultState;
 }

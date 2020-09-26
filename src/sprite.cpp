@@ -11,19 +11,16 @@ Sprite::Sprite(std::string imgPath, std::string configPath)
       _currentAnimationIndex(0),
       _currentAnimState()
 {
-    SpriteInfo info;
-    if (_loadedConfigs.find(configPath) != _loadedConfigs.end()) {
-        info = _loadedConfigs[configPath];
+    if (_loadedConfigs.find(configPath) == _loadedConfigs.end()) {
+		_loadedConfigs[configPath] = SpriteInfo();
+		_loadedConfigs[configPath].parseConfig(configPath);
     }
-    else {
-        info.parseConfig(configPath);
-        _loadedConfigs[configPath] = info;
-    }
+	SpriteInfo* info = &_loadedConfigs[configPath];
 
-    _spriteRect = info.getSpriteRectangle();
-    _outputFactor = info.getOutputFactor();
-    _spriteStateMap = info.getSpriteStateMap();
-    _currentAnimState = info.getDefaultState();
+    _spriteRect = info->getSpriteRectangle();
+    _outputFactor = info->getOutputFactor();
+    _spriteStateMap = info->getSpriteStateMap();
+    _currentAnimState = info->getDefaultState();
     _currentAnimVect = _spriteStateMap[_currentAnimState];
 
     _currentDisplayRect.loc.x
