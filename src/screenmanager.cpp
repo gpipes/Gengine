@@ -2,6 +2,7 @@
 #include "screenmanager.hpp"
 #include "sprite.hpp"
 #include "componentmanager.hpp"
+#include "gengine.hpp"
 #include "SDL.h"
 
 ScreenManager::ScreenManager(std::string name, int width, int height, bool fullscreen)
@@ -54,21 +55,20 @@ void ScreenManager::loadSpriteComponents(std::shared_ptr<ComponentManager> compo
     }
 }
 
-std::shared_ptr<System> ScreenManager::getSystem() {
-    return
-        std::make_shared<System>(
-            [this](std::set<EntityID>& entities, std::shared_ptr<ComponentManager> componentMan,
-                   std::shared_ptr<InputManager>, Gengine*) {
-                this->systemDraw(entities, componentMan);
-        });
+RendererPtr ScreenManager::renderer() const {
+    return _renderer.get();
 }
 
-void ScreenManager::systemDraw(std::set<EntityID>& entities, std::shared_ptr<ComponentManager> componentMan) {
-    SDL_RenderClear(_renderer.get());
+void systemDraw(std::set<EntityID>& entities,
+                std::shared_ptr<ComponentManager> componentMan,
+                std::shared_ptr<InputManager>,
+                std::shared_ptr<ScreenManager> screenMan) {
     std::vector<std::shared_ptr<Sprite>>& spriteComponents
         = *componentMan->get<Sprite>();
     std::vector<std::shared_ptr<Position>>& positionComponents
         = *componentMan->get<Position>();
+
+    SDL_RenderClear(screenMan->renderer());
     for (auto& entity : entities) {
         std::shared_ptr<Sprite>& entitySprite = spriteComponents[entity];
         std::shared_ptr<Position>& entityPosition = positionComponents[entity];
@@ -82,7 +82,7 @@ void ScreenManager::systemDraw(std::set<EntityID>& entities, std::shared_ptr<Com
                 scaledOutputSize.width, scaledOutputSize.height
             });
 
-        SDL_RenderCopy(_renderer.get(), entitySprite->texture().get(), &displayRect, &outputRect);
+        SDL_RenderCopy(screenMan->renderer(), entitySprite->texture().get(), &displayRect, &outputRect);
     }
-    SDL_RenderPresent(_renderer.get());
+    SDL_RenderPresent(screenMan->renderer());
 }

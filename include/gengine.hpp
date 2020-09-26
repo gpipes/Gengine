@@ -19,11 +19,10 @@ public:
     void run();
     void loadSpriteComponents();
 
-    void registerSystem(std::shared_ptr<System>, ComponentSignature);
+    void registerSystem(SystemPtr, ComponentSignature);
 
 private:
-    ScreenManager _screenMan;
-
+    std::shared_ptr<ScreenManager> _screenMan;
     std::shared_ptr<InputManager> _inputMan;
     std::shared_ptr<ComponentManager> _componentMan;
     std::shared_ptr<SystemManager> _systemMan;

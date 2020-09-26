@@ -7,15 +7,15 @@ namespace {
 }
 
 Gengine::Gengine(std::string name, int width, int height, bool fullscreen)
-    : _screenMan(name, width, height, fullscreen),
+    : _screenMan(std::make_shared<ScreenManager>(name, width, height, fullscreen)),
       _inputMan(std::make_shared<InputManager>()),
       _componentMan(std::make_shared<ComponentManager>()),
-      _systemMan(std::make_shared<SystemManager>(_componentMan, _inputMan, this)),
+      _systemMan(std::make_shared<SystemManager>(_componentMan, _inputMan, _screenMan)),
       _nextEntityID(0)
 {
     SDL_Init(0);
-    _screenMan.init();
-    _systemMan->registerEndTickSystem(_screenMan.getSystem(),
+    _screenMan->init();
+    _systemMan->registerEndTickSystem(systemDraw,
                                       {std::type_index(typeid(Sprite)),
                                        std::type_index(typeid(Position))});
 }
@@ -52,7 +52,7 @@ void Gengine::run() {
 }
 
 void Gengine::loadSpriteComponents() {
-    _screenMan.loadSpriteComponents(_componentMan);
+    _screenMan->loadSpriteComponents(_componentMan);
 }
 
 EntityID Gengine::createEntity() {
@@ -61,6 +61,6 @@ EntityID Gengine::createEntity() {
     return previousID;
 }
 
-void Gengine::registerSystem(std::shared_ptr<System> system, ComponentSignature signature) {
+void Gengine::registerSystem(SystemPtr system, ComponentSignature signature) {
     _systemMan->registerSystem(system, signature);
 }

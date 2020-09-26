@@ -17,7 +17,7 @@ public:
     Guy(Gengine& gengine, Position loc);
 };
 
-void guyRunningSystem(std::set<EntityID>& entities,
-                      std::shared_ptr<ComponentManager> componentMan,
-                      std::shared_ptr<InputManager> inputMan,
-                      Gengine*);
+void guyRunningSystem(std::set<EntityID>&,
+                      std::shared_ptr<ComponentManager>,
+                      std::shared_ptr<InputManager>,
+                      std::shared_ptr<ScreenManager>);

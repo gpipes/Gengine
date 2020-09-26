@@ -3,31 +3,31 @@
 
 SystemManager::SystemManager(std::shared_ptr<ComponentManager> componentMan,
                              std::shared_ptr<InputManager> inputMan,
-                             Gengine* parentGengine)
+                             std::shared_ptr<ScreenManager> screenMan)
     : _componentMan(componentMan),
       _inputMan(inputMan),
-      _parentGengine(parentGengine)
+      _screenMan(screenMan)
 {}
 
-void SystemManager::registerSystem(std::shared_ptr<System> system,
+void SystemManager::registerSystem(SystemPtr system,
                                    ComponentSignature signature) {
     registerSystemToList(system, signature, _systems);
 }
 
-void SystemManager::registerBeginTickSystem(std::shared_ptr<System> system,
+void SystemManager::registerBeginTickSystem(SystemPtr system,
                                             ComponentSignature signature) {
     registerSystemToList(system, signature, _beginTickSystems);
 }
 
-void SystemManager::registerEndTickSystem(std::shared_ptr<System> system,
+void SystemManager::registerEndTickSystem(SystemPtr system,
                                            ComponentSignature signature) {
     registerSystemToList(system, signature, _endTickSystems);
 }
 
-void SystemManager::registerSystemToList(std::shared_ptr<System> system,
+void SystemManager::registerSystemToList(SystemPtr system,
                                          ComponentSignature& signature,
                                          SystemList& systemsList) {
-    std::pair<std::shared_ptr<System>, ComponentSignature> systemWithSignature
+    std::pair<SystemPtr, ComponentSignature> systemWithSignature
         = std::make_pair(system, signature);
     systemsList.insert(systemWithSignature);
     _isSystemCached[system] = false;
@@ -42,17 +42,17 @@ void SystemManager::invalidateSystemCache() {
 }
 
 void SystemManager::cacheAllSystems() {
-    for (const std::pair<std::shared_ptr<System>, ComponentSignature>& system : _beginTickSystems) {
+    for (const std::pair<SystemPtr, ComponentSignature>& system : _beginTickSystems) {
         if (!_isSystemCached[system.first]) {
             cacheSystemWithSignature(system.first, system.second);
         }
     }
-    for (const std::pair<std::shared_ptr<System>, ComponentSignature>& system : _systems) {
+    for (const std::pair<SystemPtr, ComponentSignature>& system : _systems) {
         if (!_isSystemCached[system.first]) {
             cacheSystemWithSignature(system.first, system.second);
         }
     }
-    for (const std::pair<std::shared_ptr<System>, ComponentSignature>& system : _endTickSystems) {
+    for (const std::pair<SystemPtr, ComponentSignature>& system : _endTickSystems) {
         if (!_isSystemCached[system.first]) {
             cacheSystemWithSignature(system.first, system.second);
         }
@@ -61,7 +61,7 @@ void SystemManager::cacheAllSystems() {
     _areSystemsCached = true;
 }
 
-void SystemManager::cacheSystemWithSignature(std::shared_ptr<System> system,
+void SystemManager::cacheSystemWithSignature(SystemPtr system,
                                              ComponentSignature signature) {
         std::set<EntityID> matchingEntities
             = _componentMan->getEntitiesWithSignature(signature);
@@ -73,13 +73,13 @@ void SystemManager::tick() {
     if(!_areSystemsCached) {
         cacheAllSystems();
     }
-    for (const std::pair<std::shared_ptr<System>, ComponentSignature>& system : _beginTickSystems) {
-        (*system.first)(_systemCache[system.first], _componentMan, _inputMan, _parentGengine);
+    for (const std::pair<SystemPtr, ComponentSignature>& system : _beginTickSystems) {
+        (*system.first)(_systemCache[system.first], _componentMan, _inputMan, _screenMan);
     }
-    for (const std::pair<std::shared_ptr<System>, ComponentSignature>& system : _systems) {
-        (*system.first)(_systemCache[system.first], _componentMan, _inputMan, _parentGengine);
+    for (const std::pair<SystemPtr, ComponentSignature>& system : _systems) {
+        (*system.first)(_systemCache[system.first], _componentMan, _inputMan, _screenMan);
     }
-    for (const std::pair<std::shared_ptr<System>, ComponentSignature>& system : _endTickSystems) {
-        (*system.first)(_systemCache[system.first], _componentMan, _inputMan, _parentGengine);
+    for (const std::pair<SystemPtr, ComponentSignature>& system : _endTickSystems) {
+        (*system.first)(_systemCache[system.first], _componentMan, _inputMan, _screenMan);
     }
 }

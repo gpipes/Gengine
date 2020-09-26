@@ -17,7 +17,8 @@ public:
     long height() const;
 
     TexturePtr texture() const;
-    void setTexture(TexturePtr texture);
+    void setTexture(TexturePtr);
+
 
     // Display rectangle on sprite sheet to draw
     DisplayRectangle getDisplayRect() const;
