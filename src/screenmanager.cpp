@@ -61,7 +61,7 @@ const RendererPtr& ScreenManager::renderer() const {
     return _renderer;
 }
 
-void incrementAnimation(std::vector<EntityID>& entities,
+void incrementAnimation(const std::vector<EntityID>& entities,
                         std::shared_ptr<ComponentManager> componentMan,
                         std::shared_ptr<InputManager>,
                         std::shared_ptr<ScreenManager>) {
@@ -74,7 +74,7 @@ void incrementAnimation(std::vector<EntityID>& entities,
 }
 
 
-void systemDraw(std::vector<EntityID>& entities,
+void systemDraw(const std::vector<EntityID>& entities,
                 std::shared_ptr<ComponentManager> componentMan,
                 std::shared_ptr<InputManager>,
                 std::shared_ptr<ScreenManager> screenMan) {

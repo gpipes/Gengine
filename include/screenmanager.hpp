@@ -26,12 +26,12 @@ private:
     std::unordered_map<std::string, TexturePtr> _bmpCache;
 };
 
-void systemDraw(std::vector<EntityID>&,
+void systemDraw(const std::vector<EntityID>&,
                 std::shared_ptr<ComponentManager>,
                 std::shared_ptr<InputManager>,
                 std::shared_ptr<ScreenManager>);
 
-void incrementAnimation(std::vector<EntityID>&,
+void incrementAnimation(const std::vector<EntityID>&,
                         std::shared_ptr<ComponentManager>,
                         std::shared_ptr<InputManager>,
                         std::shared_ptr<ScreenManager>);

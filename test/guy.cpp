@@ -20,7 +20,7 @@ Guy::Guy(Gengine& gengine, Position loc)
     gengine.giveEntityComponent(id, Sprite("images/guy.bmp", "config/guy.json"));
 }
 
-void guyRunningSystem(std::vector<EntityID>& entities,
+void guyRunningSystem(const std::vector<EntityID>& entities,
                       std::shared_ptr<ComponentManager> componentMan,
                       std::shared_ptr<InputManager> inputMan,
                       std::shared_ptr<ScreenManager>)
