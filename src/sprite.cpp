@@ -23,13 +23,15 @@ Sprite::Sprite(std::string imgPath, std::string configPath)
     _currentAnimState = info->getDefaultState();
     _currentAnimVect = _spriteStateMap[_currentAnimState];
 
-    _currentDisplayRect.loc.x
+    _currentDisplayRect.x
         = _currentAnimVect.frameInfo[_currentAnimationIndex].pos.x * _spriteRect.width;
-    _currentDisplayRect.loc.y
+    _currentDisplayRect.y
         = _currentAnimVect.frameInfo[_currentAnimationIndex].pos.y * _spriteRect.height;
 
-    _currentDisplayRect.width = _spriteRect.width;
-    _currentDisplayRect.height = _spriteRect.height;
+    _currentDisplayRect.w = _spriteRect.width;
+    _currentDisplayRect.h = _spriteRect.height;
+    _outputRect.width = _spriteRect.width * _outputFactor;
+    _outputRect.height = _spriteRect.height * _outputFactor;
 }
 
 void Sprite::setTexture(TexturePtr texture) {
@@ -67,24 +69,21 @@ void Sprite::incrementAnimation() {
     else {
         ++_currentAnimationIndex;
     }
-    _currentDisplayRect.loc.x
+    _currentDisplayRect.x
         = _currentAnimVect.frameInfo[_currentAnimationIndex].pos.x * _spriteRect.width;
-    _currentDisplayRect.loc.y
+    _currentDisplayRect.y
         = _currentAnimVect.frameInfo[_currentAnimationIndex].pos.y * _spriteRect.height;
 }
 
-DisplayRectangle Sprite::getDisplayRect() const {
+const DisplayRectangle& Sprite::getDisplayRect() const {
     return _currentDisplayRect;
 }
 
-Rectangle Sprite::getOutputRect() const {
-    return {
-        _spriteRect.width * _outputFactor,
-        _spriteRect.height * _outputFactor
-    };
+const Rectangle& Sprite::getOutputRect() const {
+    return _outputRect;
 }
 
-TexturePtr Sprite::texture() const {
+const TexturePtr& Sprite::texture() const {
     return _texture;
 }
 

@@ -18,9 +18,9 @@ class InputManager;
 class Sprite;
 
 typedef std::size_t EntityID;
-typedef SDL_Renderer* RendererPtr;
+typedef std::shared_ptr<SDL_Renderer> RendererPtr;
 typedef std::set<std::type_index> ComponentSignature;
-typedef void (*SystemPtr)(std::set<EntityID>&,
+typedef void (*SystemPtr)(std::vector<EntityID>&,
                           std::shared_ptr<ComponentManager>,
                           std::shared_ptr<InputManager>,
                           std::shared_ptr<ScreenManager>);
@@ -31,3 +31,4 @@ typedef std::vector<GameObjectPtr> GameObjectList;
 typedef std::shared_ptr<SDL_Texture> TexturePtr;
 typedef std::shared_ptr<GameEvent> GameEventPtr;
 typedef std::vector<GameEventPtr> GameEventList;
+typedef SDL_Rect DisplayRectangle;

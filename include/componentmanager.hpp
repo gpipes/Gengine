@@ -7,22 +7,19 @@
 class ComponentManager {
 public:
     ComponentManager();
-    std::set<EntityID> getEntitiesWithSignature(ComponentSignature);
-    template<typename T> std::shared_ptr<T> getComponentForEntity(EntityID);
-    template<typename T> void addComponentForEntity(EntityID, std::shared_ptr<T> component);
+    std::vector<EntityID> getEntitiesWithSignature(ComponentSignature);
+    template<typename T> void addComponentForEntity(EntityID, T component);
 
-    template<typename T>
-    std::shared_ptr<
-        std::vector<std::shared_ptr<T>>> get();
+    template<typename T> std::vector<T>& get();
 
 private:
     std::map<EntityID, ComponentSignature> _entitySignaturesMap;
     std::unordered_map<std::type_index,
-                       std::shared_ptr<std::vector<std::shared_ptr<void>>>> _componentMap;
+                       std::vector<std::byte>> _componentMap;
 };
 
 template<typename T>
-void ComponentManager::addComponentForEntity(EntityID entity, std::shared_ptr<T> component) {
+void ComponentManager::addComponentForEntity(EntityID entity, T component) {
     ComponentSignature existingSignature;
     std::type_index insertedType = std::type_index(typeid(T));
 
@@ -34,25 +31,16 @@ void ComponentManager::addComponentForEntity(EntityID entity, std::shared_ptr<T>
     _entitySignaturesMap[entity] = existingSignature;
 
     if (_componentMap.find(insertedType) == _componentMap.end()) {
-        _componentMap[insertedType]
-            = std::make_shared<std::vector<std::shared_ptr<void>>>();
-        _componentMap[insertedType]->resize(std::max<EntityID>(entity * 2, 2));
-    } else if ((_componentMap[insertedType]->size()-1) < entity) {
-        _componentMap[insertedType]->resize(entity * 2);
+        _componentMap[insertedType] = std::vector<std::byte>();
     }
-    (*_componentMap[insertedType])[entity] = component;
+    std::vector<T>& typeSafeMap = reinterpret_cast<std::vector<T> &>(_componentMap[insertedType]);
+    if (typeSafeMap.size() == 0 || typeSafeMap.size() - 1 < entity) {
+        typeSafeMap.resize(std::max<EntityID>(entity * 2, 2));
+    }
+    typeSafeMap[entity] = component;
 }
 
 template<typename T>
-std::shared_ptr<T> ComponentManager::getComponentForEntity(EntityID id)
-{
-    return std::reinterpret_pointer_cast<T>(
-        _componentMap.at(std::type_index(typeid(T)))->at(id)
-        );
-}
-
-template<typename T>
-std::shared_ptr<std::vector<std::shared_ptr<T>>> ComponentManager::get() {
-    return std::reinterpret_pointer_cast<std::vector<std::shared_ptr<T>>>
-        (_componentMap[std::type_index(typeid(T))]);
+std::vector<T>& ComponentManager::get() {
+    return reinterpret_cast<std::vector<T> &>(_componentMap[std::type_index(typeid(T))]);
 }

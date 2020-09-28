@@ -1,10 +1,10 @@
 #include "utility.hpp"
 
-SDL_Rect sdlRectFromRectangle(DisplayRectangle rect) {
+SDL_Rect sdlRectFromRectangle(SDL_Rect rect) {
     return {
-        rect.loc.x,
-        rect.loc.y,
-        rect.width,
-        rect.height
+        rect.x,
+        rect.y,
+        rect.w,
+        rect.h
     };
 }

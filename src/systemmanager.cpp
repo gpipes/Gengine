@@ -63,7 +63,7 @@ void SystemManager::cacheAllSystems() {
 
 void SystemManager::cacheSystemWithSignature(SystemPtr system,
                                              ComponentSignature signature) {
-        std::set<EntityID> matchingEntities
+        std::vector<EntityID> matchingEntities
             = _componentMan->getEntitiesWithSignature(signature);
         _systemCache[system] = matchingEntities;
         _isSystemCached[system] = true;

@@ -15,6 +15,10 @@ Gengine::Gengine(std::string name, int width, int height, bool fullscreen)
 {
     SDL_Init(0);
     _screenMan->init();
+
+    _systemMan->registerEndTickSystem(incrementAnimation,
+                                      {std::type_index(typeid(Sprite))});
+
     _systemMan->registerEndTickSystem(systemDraw,
                                       {std::type_index(typeid(Sprite)),
                                        std::type_index(typeid(Position))});
@@ -48,6 +52,7 @@ void Gengine::run() {
         if (frameDelta < msPerFrame60FPS) {
             SDL_Delay(static_cast<Uint32>(msPerFrame60FPS - frameDelta));
         }
+        std::cout << "MS per frame: " << SDL_GetTicks() - startFrameTime << std::endl;
     }
 }
 

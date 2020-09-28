@@ -31,7 +31,7 @@ private:
     std::shared_ptr<InputManager> _inputMan;
     std::shared_ptr<ScreenManager> _screenMan;
 
-    std::unordered_map<SystemPtr, std::set<EntityID>> _systemCache;
+    std::unordered_map<SystemPtr, std::vector<EntityID>> _systemCache;
     std::unordered_map<SystemPtr, bool> _isSystemCached;
     bool _areSystemsCached;
 

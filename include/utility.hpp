@@ -37,11 +37,6 @@ struct Rectangle {
     long width, height;
 };
 
-struct DisplayRectangle {
-    Point loc;
-    long width = 0, height = 0;
-};
-
 struct AnimationInfo {
     Point pos;
     int totalFrames;
@@ -65,4 +60,4 @@ struct AnimationVector {
     bool isLooped;
 };
 
-SDL_Rect sdlRectFromRectangle(DisplayRectangle rect);
+SDL_Rect sdlRectFromRectangle(SDL_Rect rect);

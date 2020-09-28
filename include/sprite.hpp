@@ -10,20 +10,21 @@
 
 class Sprite {
 public:
+    Sprite() = default;
     Sprite(std::string imgPath, std::string configPath);
 	
     std::string imgPath() const;
     long width() const;
     long height() const;
 
-    TexturePtr texture() const;
+    const TexturePtr& texture() const;
     void setTexture(TexturePtr);
 
 
     // Display rectangle on sprite sheet to draw
-    DisplayRectangle getDisplayRect() const;
+    const DisplayRectangle& getDisplayRect() const;
     // Scaled output rectangle
-    Rectangle getOutputRect() const;
+    const Rectangle& getOutputRect() const;
 
     void setCurrentAnimationState(const std::string &state);
     void incrementAnimation();
@@ -36,6 +37,7 @@ private:
     std::unordered_map<std::string, AnimationVector> _spriteStateMap;
     AnimationVector _currentAnimVect;
     DisplayRectangle _currentDisplayRect;
+    Rectangle _outputRect;
     int _currentAnimationFrames;
     int _currentAnimationIndex;
     std::string _currentAnimState;

@@ -12,7 +12,7 @@ public:
     ScreenManager(std::string, int, int, bool);
     void init();
     void loadSpriteComponents(std::shared_ptr<ComponentManager>);
-    RendererPtr renderer() const;
+    const RendererPtr& renderer() const;
 
 private:
     void draw(const GameObjectBase& gameObject);
@@ -26,7 +26,12 @@ private:
     std::unordered_map<std::string, TexturePtr> _bmpCache;
 };
 
-void systemDraw(std::set<EntityID>&,
+void systemDraw(std::vector<EntityID>&,
                 std::shared_ptr<ComponentManager>,
                 std::shared_ptr<InputManager>,
                 std::shared_ptr<ScreenManager>);
+
+void incrementAnimation(std::vector<EntityID>&,
+                        std::shared_ptr<ComponentManager>,
+                        std::shared_ptr<InputManager>,
+                        std::shared_ptr<ScreenManager>);

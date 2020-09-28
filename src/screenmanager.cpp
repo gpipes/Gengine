@@ -34,55 +34,66 @@ void ScreenManager::init() {
 }
 
 void ScreenManager::loadSpriteComponents(std::shared_ptr<ComponentManager> componentMan) {
-    std::set<EntityID> spriteEntities = componentMan->getEntitiesWithSignature({
+    std::vector<EntityID> spriteEntities = componentMan->getEntitiesWithSignature({
             std::type_index(typeid(Sprite))
                 });
+    std::vector<Sprite>& spriteComponents = componentMan->get<Sprite>();
+
     for (auto& entity : spriteEntities) {
-        std::shared_ptr<Sprite> entitySprite = componentMan->getComponentForEntity<Sprite>(entity);
-        if (_bmpCache.find(entitySprite->imgPath()) != _bmpCache.end()) {
-            entitySprite->setTexture(_bmpCache[entitySprite->imgPath()]);
+        Sprite& entitySprite = spriteComponents[entity];
+        if (_bmpCache.find(entitySprite.imgPath()) != _bmpCache.end()) {
+            entitySprite.setTexture(_bmpCache[entitySprite.imgPath()]);
             continue;
         }
 
-        std::shared_ptr<SDL_Surface> surface(SDL_LoadBMP(entitySprite->imgPath().c_str()), SDL_FreeSurface);
+        std::shared_ptr<SDL_Surface> surface(SDL_LoadBMP(entitySprite.imgPath().c_str()), SDL_FreeSurface);
         SDL_SetColorKey(surface.get(), SDL_TRUE, SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
 
         TexturePtr texture = TexturePtr(
             SDL_CreateTextureFromSurface(_renderer.get(), surface.get()),
             SDL_DestroyTexture);
-        _bmpCache[entitySprite->imgPath()] = texture;
-        entitySprite->setTexture(texture);
+        _bmpCache[entitySprite.imgPath()] = texture;
+        entitySprite.setTexture(texture);
     }
 }
 
-RendererPtr ScreenManager::renderer() const {
-    return _renderer.get();
+const RendererPtr& ScreenManager::renderer() const {
+    return _renderer;
 }
 
-void systemDraw(std::set<EntityID>& entities,
+void incrementAnimation(std::vector<EntityID>& entities,
+                        std::shared_ptr<ComponentManager> componentMan,
+                        std::shared_ptr<InputManager>,
+                        std::shared_ptr<ScreenManager>) {
+    std::vector<Sprite>& spriteComponents = componentMan->get<Sprite>();
+
+    for (auto& entity : entities) {
+        Sprite& entitySprite = spriteComponents[entity];
+        entitySprite.incrementAnimation();
+    }
+}
+
+
+void systemDraw(std::vector<EntityID>& entities,
                 std::shared_ptr<ComponentManager> componentMan,
                 std::shared_ptr<InputManager>,
                 std::shared_ptr<ScreenManager> screenMan) {
-    std::vector<std::shared_ptr<Sprite>>& spriteComponents
-        = *componentMan->get<Sprite>();
-    std::vector<std::shared_ptr<Position>>& positionComponents
-        = *componentMan->get<Position>();
+    std::vector<Sprite>& spriteComponents = componentMan->get<Sprite>();
+    std::vector<Position>& positionComponents = componentMan->get<Position>();
 
-    SDL_RenderClear(screenMan->renderer());
+    SDL_RenderClear(screenMan->renderer().get());
     for (auto& entity : entities) {
-        std::shared_ptr<Sprite>& entitySprite = spriteComponents[entity];
-        std::shared_ptr<Position>& entityPosition = positionComponents[entity];
+        Sprite& entitySprite = spriteComponents[entity];
+        Position& entityPosition = positionComponents[entity];
 
-        entitySprite->incrementAnimation();
-
-        SDL_Rect displayRect = sdlRectFromRectangle(entitySprite->getDisplayRect());
-        Rectangle scaledOutputSize = entitySprite->getOutputRect();
-        SDL_Rect outputRect = sdlRectFromRectangle({
-                {entityPosition->x, entityPosition->y},
+        const SDL_Rect& displayRect = entitySprite.getDisplayRect();
+        const Rectangle& scaledOutputSize = entitySprite.getOutputRect();
+        const SDL_Rect outputRect = {
+                entityPosition.x, entityPosition.y,
                 scaledOutputSize.width, scaledOutputSize.height
-            });
+            };
 
-        SDL_RenderCopy(screenMan->renderer(), entitySprite->texture().get(), &displayRect, &outputRect);
+        SDL_RenderCopy(screenMan->renderer().get(), entitySprite.texture().get(), &displayRect, &outputRect);
     }
-    SDL_RenderPresent(screenMan->renderer());
+    SDL_RenderPresent(screenMan->renderer().get());
 }

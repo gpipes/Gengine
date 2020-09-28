@@ -14,7 +14,7 @@ public:
     ~Gengine();
 
     EntityID createEntity();
-    template<typename T> void giveEntityComponent(EntityID,std::shared_ptr<T>);
+    template<typename T> void giveEntityComponent(EntityID, T);
 
     void run();
     void loadSpriteComponents();
@@ -30,7 +30,7 @@ private:
 };
 
 template<typename T>
-void Gengine::giveEntityComponent(EntityID id, std::shared_ptr<T> component) {
+void Gengine::giveEntityComponent(EntityID id, T component) {
     _systemMan->invalidateSystemCache();
     _componentMan->addComponentForEntity(id, component);
 }
