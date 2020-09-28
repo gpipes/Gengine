@@ -15,12 +15,12 @@ Sprite::Sprite(std::string imgPath, std::string configPath)
 		_loadedConfigs[configPath] = SpriteInfo();
 		_loadedConfigs[configPath].parseConfig(configPath);
     }
-	SpriteInfo* info = &_loadedConfigs[configPath];
+    SpriteInfo& info = _loadedConfigs[configPath];
 
-    _spriteRect = info->getSpriteRectangle();
-    _outputFactor = info->getOutputFactor();
-    _spriteStateMap = info->getSpriteStateMap();
-    _currentAnimState = info->getDefaultState();
+    _spriteRect = info.getSpriteRectangle();
+    _outputFactor = info.getOutputFactor();
+    _spriteStateMap = info.getSpriteStateMap();
+    _currentAnimState = info.getDefaultState();
     _currentAnimVect = _spriteStateMap[_currentAnimState];
 
     _currentDisplayRect.x
@@ -38,7 +38,7 @@ void Sprite::setTexture(TexturePtr texture) {
     _texture = texture;
 }
 
-void Sprite::setCurrentAnimationState(const std::string &state) {
+void Sprite::setCurrentAnimationState(const int &state) {
     if (state != _currentAnimState) {
         _currentAnimationFrames = 0;
         _currentAnimationIndex = 0;

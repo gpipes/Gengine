@@ -83,8 +83,8 @@ void systemDraw(std::vector<EntityID>& entities,
 
     SDL_RenderClear(screenMan->renderer().get());
     for (auto& entity : entities) {
-        Sprite& entitySprite = spriteComponents[entity];
-        Position& entityPosition = positionComponents[entity];
+        const Sprite& entitySprite = spriteComponents[entity];
+        const Position& entityPosition = positionComponents[entity];
 
         const SDL_Rect& displayRect = entitySprite.getDisplayRect();
         const Rectangle& scaledOutputSize = entitySprite.getOutputRect();

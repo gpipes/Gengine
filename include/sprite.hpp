@@ -26,7 +26,7 @@ public:
     // Scaled output rectangle
     const Rectangle& getOutputRect() const;
 
-    void setCurrentAnimationState(const std::string &state);
+    void setCurrentAnimationState(const int &state);
     void incrementAnimation();
 private:
     TexturePtr _texture;
@@ -34,13 +34,13 @@ private:
     std::string _imgPath;
     int _outputFactor;
 
-    std::unordered_map<std::string, AnimationVector> _spriteStateMap;
+    std::unordered_map<int, AnimationVector> _spriteStateMap;
     AnimationVector _currentAnimVect;
     DisplayRectangle _currentDisplayRect;
     Rectangle _outputRect;
     int _currentAnimationFrames;
     int _currentAnimationIndex;
-    std::string _currentAnimState;
+    int _currentAnimState;
 
     static std::unordered_map<std::string, SpriteInfo> _loadedConfigs;
 };

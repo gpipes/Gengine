@@ -4,10 +4,9 @@
         "height": 40
     },
     "OutputFactor": 1.5,
-    "DefaultState": "walking_down",
+    "DefaultState": 0,
     "SpriteStateMapList": [
         {
-            "stateName": "idle_down",
             "isAnim": true,
             "isLoop": true,
             "animInfo": [
@@ -21,7 +20,6 @@
             ]
         },
         {
-            "stateName": "walking_right",
             "isAnim": true,
             "isLoop": true,
             "animInfo": [
@@ -57,12 +55,11 @@
             ]
         },
         {
-            "stateName": "walking_left",
             "isAnim": true,
             "isLoop": true,
             "animInfo": [
                 {
-                     "Position": {
+                    "Position": {
                         "x": 0,
                         "y": 1
                     },
@@ -93,8 +90,7 @@
             ]
         },
         {
-            "stateName": "walking_up",
-                    "isAnim": true,
+            "isAnim": true,
             "isLoop": true,
             "animInfo": [
                 {
@@ -128,8 +124,7 @@
 
             ]
         },
-                {
-            "stateName": "walking_down",
+        {
             "isAnim": true,
             "isLoop": true,
             "animInfo": [

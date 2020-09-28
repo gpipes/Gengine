@@ -4,11 +4,11 @@
 #include "gengine.hpp"
 
 namespace {
-    const std::string WALKING_RIGHT = "walking_right";
-    const std::string WALKING_LEFT = "walking_left";
-    const std::string WALKING_UP = "walking_up";
-    const std::string WALKING_DOWN = "walking_down";
-    const std::string IDLE_DOWN = "idle_down";
+    const int WALKING_RIGHT = 1;
+    const int WALKING_LEFT = 2;
+    const int WALKING_UP = 3;
+    const int WALKING_DOWN = 4;
+    const int IDLE_DOWN = 0;
 }
 
 Guy::Guy(Gengine& gengine, Position loc)

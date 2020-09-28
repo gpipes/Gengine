@@ -45,17 +45,17 @@ int SpriteInfo::getOutputFactor() {
     return _outputFactor;
 }
 
-std::unordered_map<std::string, AnimationVector> SpriteInfo::getSpriteStateMap() {
+std::unordered_map<int, AnimationVector> SpriteInfo::getSpriteStateMap() {
     if (!_spriteStateMap.empty()) {
         return _spriteStateMap;
     }
-    std::unordered_map<std::string, AnimationVector> spriteStates;
+    std::unordered_map<int, AnimationVector> spriteStates;
     pt::ptree spriteStateMapList = _configFile.get_child("SpriteStateMapList");
+    int i = 0;
     for(auto spriteStateMapPair : spriteStateMapList) {
         pt::ptree spriteStateMap = spriteStateMapPair.second;
         bool isAnim = spriteStateMap.get<bool>("isAnim");
         bool isLoop = spriteStateMap.get<bool>("isLoop");
-        std::string stateName = spriteStateMap.get<std::string>("stateName");
         std::vector<AnimationInfo> animInfoVector;
         for(auto animInfoPair : spriteStateMap.get_child("animInfo")) {
             pt::ptree animInfo = animInfoPair.second;
@@ -69,15 +69,16 @@ std::unordered_map<std::string, AnimationVector> SpriteInfo::getSpriteStateMap()
                 }
                 );
         }
-        spriteStates[stateName] = AnimationVector(animInfoVector, isAnim, isLoop);
+        spriteStates[i] = AnimationVector(animInfoVector, isAnim, isLoop);
+        ++i;
     }
     _spriteStateMap = spriteStates;
     return spriteStates;
 }
 
-std::string SpriteInfo::getDefaultState() {
+int SpriteInfo::getDefaultState() {
     if (!_defaultStateInitialized) {
-        _defaultState = _configFile.get<std::string>("DefaultState");
+        _defaultState = _configFile.get("DefaultState", 0);
         _defaultStateInitialized = true;
     }
     return _defaultState;
