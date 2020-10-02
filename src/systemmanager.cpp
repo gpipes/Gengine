@@ -1,9 +1,9 @@
 #include "systemmanager.hpp"
 #include "componentmanager.hpp"
 
-SystemManager::SystemManager(std::shared_ptr<ComponentManager> componentMan,
-                             std::shared_ptr<InputManager> inputMan,
-                             std::shared_ptr<ScreenManager> screenMan)
+SystemManager::SystemManager(ComponentManager& componentMan,
+                             InputManager& inputMan,
+                             ScreenManager& screenMan)
     : _componentMan(componentMan),
       _inputMan(inputMan),
       _screenMan(screenMan)
@@ -64,7 +64,7 @@ void SystemManager::cacheAllSystems() {
 void SystemManager::cacheSystemWithSignature(SystemPtr system,
                                              ComponentSignature signature) {
         std::vector<EntityID> matchingEntities
-            = _componentMan->getEntitiesWithSignature(signature);
+            = _componentMan.getEntitiesWithSignature(signature);
         _systemCache[system] = matchingEntities;
         _isSystemCached[system] = true;
 }

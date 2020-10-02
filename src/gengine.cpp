@@ -7,19 +7,19 @@ namespace {
 }
 
 Gengine::Gengine(std::string name, int width, int height, bool fullscreen)
-    : _screenMan(std::make_shared<ScreenManager>(name, width, height, fullscreen)),
-      _inputMan(std::make_shared<InputManager>()),
-      _componentMan(std::make_shared<ComponentManager>()),
-      _systemMan(std::make_shared<SystemManager>(_componentMan, _inputMan, _screenMan)),
+    : _screenMan(ScreenManager(name, width, height, fullscreen)),
+      _inputMan(InputManager()),
+      _componentMan(ComponentManager()),
+      _systemMan(SystemManager(_componentMan, _inputMan, _screenMan)),
       _nextEntityID(0)
 {
     SDL_Init(0);
-    _screenMan->init();
+    _screenMan.init();
 
-    _systemMan->registerEndTickSystem(incrementAnimation,
+    _systemMan.registerEndTickSystem(incrementAnimation,
                                       {std::type_index(typeid(Sprite))});
 
-    _systemMan->registerEndTickSystem(systemDraw,
+    _systemMan.registerEndTickSystem(systemDraw,
                                       {std::type_index(typeid(Sprite)),
                                        std::type_index(typeid(Position))});
 }
@@ -36,16 +36,16 @@ void Gengine::run() {
 
         SDL_Event e;
         while (SDL_PollEvent(&e)) {
-            _inputMan->addInputEvent(e);
+            _inputMan.addInputEvent(e);
         }
 
-        if (_inputMan->isQuit()) {
+        if (_inputMan.isQuit()) {
             isRunning = false;
             continue;
         }
 
-        _systemMan->tick();
-        _inputMan->clearInputEvents();
+        _systemMan.tick();
+        _inputMan.clearInputEvents();
 
         endFrameTime = SDL_GetTicks();
         frameDelta = endFrameTime - startFrameTime;
@@ -57,7 +57,7 @@ void Gengine::run() {
 }
 
 void Gengine::loadSpriteComponents() {
-    _screenMan->loadSpriteComponents(_componentMan);
+    _screenMan.loadSpriteComponents(_componentMan);
 }
 
 EntityID Gengine::createEntity() {
@@ -67,5 +67,5 @@ EntityID Gengine::createEntity() {
 }
 
 void Gengine::registerSystem(SystemPtr system, ComponentSignature signature) {
-    _systemMan->registerSystem(system, signature);
+    _systemMan.registerSystem(system, signature);
 }

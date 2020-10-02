@@ -14,22 +14,22 @@ namespace {
 Guy::Guy(Gengine& gengine, Position loc)
 {
     EntityID id = gengine.createEntity();
-    gengine.giveEntityComponent(id, GuyRunning());
-    gengine.giveEntityComponent(id, Position(loc.x, loc.y));
-    gengine.giveEntityComponent(id, Destination(loc.x, loc.y, 1));
-    gengine.giveEntityComponent(id, Sprite("images/guy.bmp", "config/guy.json"));
+    gengine.giveEntityComponent<GuyRunning>(id);
+    gengine.giveEntityComponent<Position>(id, loc.x, loc.y);
+    gengine.giveEntityComponent<Destination>(id, loc.x, loc.y, 1);
+    gengine.giveEntityComponent<Sprite>(id, "images/guy.bmp", "config/guy.json");
 }
 
 void guyRunningSystem(const std::vector<EntityID>& entities,
-                      std::shared_ptr<ComponentManager> componentMan,
-                      std::shared_ptr<InputManager> inputMan,
-                      std::shared_ptr<ScreenManager>)
+                      ComponentManager& componentMan,
+                      InputManager&,
+                      ScreenManager&)
 {
     static int wanderTicks = 60;
     static int movementTicks = 3;
-    std::vector<Sprite>& entitySprite = componentMan->get<Sprite>();
-    std::vector<Position>& entityPos = componentMan->get<Position>();
-    std::vector<Destination>& entityDest = componentMan->get<Destination>();
+    std::vector<Sprite>& entitySprite = componentMan.get<Sprite>();
+    std::vector<Position>& entityPos = componentMan.get<Position>();
+    std::vector<Destination>& entityDest = componentMan.get<Destination>();
 
 
     for (const EntityID& entity : entities) {

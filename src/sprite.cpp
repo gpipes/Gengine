@@ -48,14 +48,6 @@ void Sprite::setCurrentAnimationState(const int &state) {
 }
 
 void Sprite::incrementAnimation() {
-    if (!_currentAnimVect.isAnimated)
-        return;
-
-    if (!_currentAnimVect.isLooped && _currentAnimationIndex == _currentAnimVect.frameInfo.size() - 1)
-        return;
-
-    // at this point it's animated and is either looped or has frames left to display
-	
     if (_currentAnimVect.frameInfo[_currentAnimationIndex].totalFrames > _currentAnimationFrames) {
         ++_currentAnimationFrames;
         return;
@@ -87,14 +79,14 @@ const TexturePtr& Sprite::texture() const {
     return _texture;
 }
 
-long Sprite::width() const {
+const long Sprite::width() const {
     return _spriteRect.width;
 }
 
-long Sprite::height() const {
+const long Sprite::height() const {
     return _spriteRect.height;
 }
 
-std::string Sprite::imgPath() const {
+const std::string& Sprite::imgPath() const {
     return _imgPath;
 }

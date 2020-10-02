@@ -11,23 +11,24 @@
 class Sprite {
 public:
     Sprite() = default;
+    Sprite(Sprite&&) = default;
+    Sprite& operator=(Sprite&&) = default;
     Sprite(std::string imgPath, std::string configPath);
+
+    Sprite(const Sprite&) = delete;
+    Sprite& operator=(const Sprite&) = delete;
 	
-    std::string imgPath() const;
-    long width() const;
-    long height() const;
-
+    const std::string& imgPath() const;
+    const long width() const;
+    const long height() const;
     const TexturePtr& texture() const;
-    void setTexture(TexturePtr);
-
-
-    // Display rectangle on sprite sheet to draw
     const DisplayRectangle& getDisplayRect() const;
-    // Scaled output rectangle
     const Rectangle& getOutputRect() const;
 
+    void setTexture(TexturePtr);
     void setCurrentAnimationState(const int &state);
     void incrementAnimation();
+
 private:
     TexturePtr _texture;
     Rectangle _spriteRect;

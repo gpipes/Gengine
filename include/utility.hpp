@@ -59,5 +59,3 @@ struct AnimationVector {
     bool isAnimated;
     bool isLooped;
 };
-
-SDL_Rect sdlRectFromRectangle(SDL_Rect rect);

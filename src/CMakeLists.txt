@@ -7,7 +7,6 @@ set(GENGINE_SRCS
   screenmanager.cpp
   sprite.cpp
   spriteinfo.cpp
-  utility.cpp
   componentmanager.cpp
   systemmanager.cpp
   )
@@ -18,6 +17,7 @@ set(GENGINE_HDRS
   ../include/screenmanager.hpp
   ../include/sprite.hpp
   ../include/utility.hpp
+  ../include/fwd.hpp
   ../include/componentmanager.hpp
   )
 

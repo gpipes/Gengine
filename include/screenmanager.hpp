@@ -11,7 +11,7 @@ class ScreenManager {
 public:
     ScreenManager(std::string, int, int, bool);
     void init();
-    void loadSpriteComponents(std::shared_ptr<ComponentManager>);
+    void loadSpriteComponents(ComponentManager&);
     const RendererPtr& renderer() const;
 
 private:
@@ -27,11 +27,11 @@ private:
 };
 
 void systemDraw(const std::vector<EntityID>&,
-                std::shared_ptr<ComponentManager>,
-                std::shared_ptr<InputManager>,
-                std::shared_ptr<ScreenManager>);
+                ComponentManager&,
+                InputManager&,
+                ScreenManager&);
 
 void incrementAnimation(const std::vector<EntityID>&,
-                        std::shared_ptr<ComponentManager>,
-                        std::shared_ptr<InputManager>,
-                        std::shared_ptr<ScreenManager>);
+                        ComponentManager&,
+                        InputManager&,
+                        ScreenManager&);

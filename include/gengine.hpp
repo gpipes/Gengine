@@ -14,7 +14,7 @@ public:
     ~Gengine();
 
     EntityID createEntity();
-    template<typename T> void giveEntityComponent(EntityID, T);
+    template<typename T, typename ... Types> void giveEntityComponent(EntityID, Types ...);
 
     void run();
     void loadSpriteComponents();
@@ -22,15 +22,15 @@ public:
     void registerSystem(SystemPtr, ComponentSignature);
 
 private:
-    std::shared_ptr<ScreenManager> _screenMan;
-    std::shared_ptr<InputManager> _inputMan;
-    std::shared_ptr<ComponentManager> _componentMan;
-    std::shared_ptr<SystemManager> _systemMan;
+    ScreenManager _screenMan;
+    InputManager _inputMan;
+    ComponentManager _componentMan;
+    SystemManager _systemMan;
     EntityID _nextEntityID;
 };
 
-template<typename T>
-void Gengine::giveEntityComponent(EntityID id, T component) {
-    _systemMan->invalidateSystemCache();
-    _componentMan->addComponentForEntity(id, component);
+template<typename T, typename ... Types>
+void Gengine::giveEntityComponent(EntityID id, Types ... args) {
+    _systemMan.invalidateSystemCache();
+    _componentMan.addComponentForEntity<T>(id, args...);
 }

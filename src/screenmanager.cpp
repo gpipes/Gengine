@@ -33,11 +33,11 @@ void ScreenManager::init() {
 
 }
 
-void ScreenManager::loadSpriteComponents(std::shared_ptr<ComponentManager> componentMan) {
-    std::vector<EntityID> spriteEntities = componentMan->getEntitiesWithSignature({
+void ScreenManager::loadSpriteComponents(ComponentManager& componentMan) {
+    std::vector<EntityID> spriteEntities = componentMan.getEntitiesWithSignature({
             std::type_index(typeid(Sprite))
                 });
-    std::vector<Sprite>& spriteComponents = componentMan->get<Sprite>();
+    std::vector<Sprite>& spriteComponents = componentMan.get<Sprite>();
 
     for (auto& entity : spriteEntities) {
         Sprite& entitySprite = spriteComponents[entity];
@@ -62,26 +62,25 @@ const RendererPtr& ScreenManager::renderer() const {
 }
 
 void incrementAnimation(const std::vector<EntityID>& entities,
-                        std::shared_ptr<ComponentManager> componentMan,
-                        std::shared_ptr<InputManager>,
-                        std::shared_ptr<ScreenManager>) {
-    std::vector<Sprite>& spriteComponents = componentMan->get<Sprite>();
+                        ComponentManager& componentMan,
+                        InputManager&,
+                        ScreenManager&) {
+    std::vector<Sprite>& spriteComponents = componentMan.get<Sprite>();
 
     for (auto& entity : entities) {
-        Sprite& entitySprite = spriteComponents[entity];
-        entitySprite.incrementAnimation();
+        spriteComponents[entity].incrementAnimation();
     }
 }
 
 
 void systemDraw(const std::vector<EntityID>& entities,
-                std::shared_ptr<ComponentManager> componentMan,
-                std::shared_ptr<InputManager>,
-                std::shared_ptr<ScreenManager> screenMan) {
-    std::vector<Sprite>& spriteComponents = componentMan->get<Sprite>();
-    std::vector<Position>& positionComponents = componentMan->get<Position>();
+                ComponentManager& componentMan,
+                InputManager&,
+                ScreenManager& screenMan) {
+    std::vector<Sprite>& spriteComponents = componentMan.get<Sprite>();
+    std::vector<Position>& positionComponents = componentMan.get<Position>();
 
-    SDL_RenderClear(screenMan->renderer().get());
+    SDL_RenderClear(screenMan.renderer().get());
     for (auto& entity : entities) {
         const Sprite& entitySprite = spriteComponents[entity];
         const Position& entityPosition = positionComponents[entity];
@@ -93,7 +92,7 @@ void systemDraw(const std::vector<EntityID>& entities,
                 scaledOutputSize.width, scaledOutputSize.height
             };
 
-        SDL_RenderCopy(screenMan->renderer().get(), entitySprite.texture().get(), &displayRect, &outputRect);
+        SDL_RenderCopy(screenMan.renderer().get(), entitySprite.texture().get(), &displayRect, &outputRect);
     }
-    SDL_RenderPresent(screenMan->renderer().get());
+    SDL_RenderPresent(screenMan.renderer().get());
 }
