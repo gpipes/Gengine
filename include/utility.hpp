@@ -39,7 +39,7 @@ struct Rectangle {
 
 struct AnimationInfo {
     Point pos;
-    int totalFrames;
+    uint32_t totalFrames;
 };
 
 struct AnimationVector {

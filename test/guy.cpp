@@ -8,7 +8,7 @@ namespace {
     const int WALKING_LEFT = 2;
     const int WALKING_UP = 3;
     const int WALKING_DOWN = 4;
-    const int IDLE_DOWN = 0;
+    [[maybe_unused]] const int IDLE_DOWN = 0;
 }
 
 Guy::Guy(Gengine& gengine, Position loc)

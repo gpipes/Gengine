@@ -3,8 +3,8 @@
 std::unordered_map<std::string, SpriteInfo> Sprite::_loadedConfigs;
 
 Sprite::Sprite(std::string imgPath, std::string configPath)
-    : _imgPath(imgPath),
-      _spriteRect(0,0),
+    : _spriteRect(0,0),
+      _imgPath(imgPath),
       _outputFactor(0),
       _spriteStateMap(),
       _currentAnimationFrames(0),
@@ -38,7 +38,7 @@ void Sprite::setTexture(TexturePtr texture) {
     _texture = texture;
 }
 
-void Sprite::setCurrentAnimationState(const int &state) {
+void Sprite::setCurrentAnimationState(const uint32_t &state) {
     if (state != _currentAnimState) {
         _currentAnimationFrames = 0;
         _currentAnimationIndex = 0;
@@ -79,11 +79,11 @@ const TexturePtr& Sprite::texture() const {
     return _texture;
 }
 
-const long Sprite::width() const {
+long Sprite::width() const {
     return _spriteRect.width;
 }
 
-const long Sprite::height() const {
+long Sprite::height() const {
     return _spriteRect.height;
 }
 

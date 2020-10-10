@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 #include <map>
-#include "Fwd.hpp"
+#include "fwd.hpp"
 #include "utility.hpp"
 #include "spriteinfo.hpp"
 
@@ -19,14 +19,14 @@ public:
     Sprite& operator=(const Sprite&) = delete;
 	
     const std::string& imgPath() const;
-    const long width() const;
-    const long height() const;
+    long width() const;
+    long height() const;
     const TexturePtr& texture() const;
     const DisplayRectangle& getDisplayRect() const;
     const Rectangle& getOutputRect() const;
 
     void setTexture(TexturePtr);
-    void setCurrentAnimationState(const int &state);
+    void setCurrentAnimationState(const uint32_t &state);
     void incrementAnimation();
 
 private:
@@ -39,9 +39,9 @@ private:
     AnimationVector _currentAnimVect;
     DisplayRectangle _currentDisplayRect;
     Rectangle _outputRect;
-    int _currentAnimationFrames;
-    int _currentAnimationIndex;
-    int _currentAnimState;
+    uint32_t _currentAnimationFrames;
+    uint32_t _currentAnimationIndex;
+    uint32_t _currentAnimState;
 
     static std::unordered_map<std::string, SpriteInfo> _loadedConfigs;
 };

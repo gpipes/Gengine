@@ -1,12 +1,13 @@
 #pragma once
-#include <vector>
-#include <memory>
+#include <SDL.h>
+
 #include <cstdint>
+#include <functional>
 #include <map>
+#include <memory>
 #include <set>
 #include <typeindex>
-#include <functional>
-#include <SDL.h>
+#include <vector>
 
 class Gengine;
 class ScreenManager;
@@ -20,12 +21,11 @@ class Sprite;
 typedef std::size_t EntityID;
 typedef std::shared_ptr<SDL_Renderer> RendererPtr;
 typedef std::set<std::type_index> ComponentSignature;
-typedef void (*SystemPtr)(const std::vector<EntityID>&,
-                          ComponentManager&,
-                          InputManager&,
-                          ScreenManager&);
-typedef std::set<std::pair<SystemPtr,
-                           ComponentSignature>> SystemList;
+
+typedef void (*SystemPtr)(const std::vector<EntityID>&, ComponentManager&,
+                          InputManager&, ScreenManager&);
+
+typedef std::set<std::pair<SystemPtr, ComponentSignature>> SystemList;
 typedef std::shared_ptr<GameObjectBase> GameObjectPtr;
 typedef std::vector<GameObjectPtr> GameObjectList;
 typedef std::shared_ptr<SDL_Texture> TexturePtr;
